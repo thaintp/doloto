@@ -1,0 +1,15 @@
+* {
+  border-color: black !important;
+}
+
+.container {
+  text-align: center;
+}
+
+.table thead {
+  background-color: #ccc;
+}
+
+.clicked {
+  background-color: rgb(103, 199, 255) !important;
+}
