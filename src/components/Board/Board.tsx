@@ -103,7 +103,7 @@ const Board = ({ data }: { data: number[][] }) => {
     <div className={styles.container}>
       <Container>
         <Row className={styles.header}>
-          <Col xs={4}>
+          <Col xs={5}>
             <Button className={styles.redoBtn} variant={theme}>
               <IoIosColorPalette></IoIosColorPalette>
             </Button>
@@ -111,7 +111,7 @@ const Board = ({ data }: { data: number[][] }) => {
               <VscDebugRestart></VscDebugRestart>
             </Button>
           </Col>
-          <Col xs={4}>
+          <Col xs={2}>
             {theme === "light" && (
               <Button variant={theme} onClick={() => setTheme("dark")}>
                 <BiSun></BiSun>
@@ -123,7 +123,7 @@ const Board = ({ data }: { data: number[][] }) => {
               </Button>
             )}
           </Col>
-          <Col xs={4}>
+          <Col xs={5}>
             <Button
               className={styles.redoBtn}
               variant={theme}
