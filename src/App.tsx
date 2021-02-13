@@ -1,6 +1,7 @@
 import React from "react";
 import { Board } from "./components";
 import "bootstrap/dist/css/bootstrap.min.css";
+import styles from "./App.module.css";
 
 const App = () => {
   const data: number[][] = [
@@ -16,6 +17,7 @@ const App = () => {
   ];
   return (
     <div>
+      <h3 className={styles.header}>Dò Lô tô</h3>
       <Board data={data} theme="light" />
     </div>
   );
