@@ -14,11 +14,11 @@ const App = () => {
     [11, 37, 44, 61, 70],
   ];
 
-  const [theme, setTheme] = useState<string>("light");
+  // const [theme, setTheme] = useState<string>("light");
 
   return (
     <div>
-      <Board data={data} theme={theme} />
+      <Board data={data} theme="light" />
     </div>
   );
 };
