@@ -349,13 +349,12 @@ const Board = () => {
               <VscDebugRestart></VscDebugRestart>
             </Button>
           </Col>
-          <Col xs={2}>
-            {theme === "light" && (
+          <Col xs={2} style={{ padding: "0" }}>
+            {theme === "light" ? (
               <Button variant={theme} onClick={() => setTheme("dark")}>
                 <BiSun></BiSun>
               </Button>
-            )}
-            {theme === "dark" && (
+            ) : (
               <Button variant={theme} onClick={() => setTheme("light")}>
                 <BiMoon></BiMoon>
               </Button>
@@ -435,8 +434,8 @@ const Board = () => {
                 <li style={{ marginTop: "10px" }}>
                   <Container>
                     <Row>
-                      <Col xs={7}>{type}</Col>
-                      <Col xs={5} style={{ textAlign: "right" }}>
+                      <Col xs={5}>{type}</Col>
+                      <Col xs={7} style={{ textAlign: "right" }}>
                         {[1, 2].map((t, j) => (
                           <Button
                             style={{

@@ -4,11 +4,10 @@
 
 .header {
   margin: 2% 0;
-  text-align: center;
+  padding: 0 !important;
 }
 
-.container,
-.header {
+.container {
   text-align: center;
 }
 
@@ -32,8 +31,10 @@
 }
 
 tbody td {
-  padding: 0.2rem !important;
-  font-size: x-large;
+  padding: 0rem !important;
+}
+tbody {
+  font-size: 5vh;
 }
 
 .redoBtn {
@@ -43,3 +44,9 @@ tbody td {
 .typeSwitcher {
   text-align: left !important;
 }
+
+/* @media screen and (max-height: 410) {
+  tbody td {
+    font-size: x-small !important;
+  }
+} */
