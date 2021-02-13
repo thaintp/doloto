@@ -7,7 +7,8 @@
   text-align: center;
 }
 
-.container {
+.container,
+.header {
   text-align: center;
 }
 
@@ -19,8 +20,11 @@
   background-color: rgb(255, 164, 103);
 }
 
-.control {
+.controlLight {
   background-color: #ccc;
+}
+.controlDark {
+  background-color: #666;
 }
 
 .controlClicked {
@@ -28,6 +32,10 @@
 }
 
 tbody td {
-  padding: 0.02rem !important;
-  font-size: xx-large;
+  padding: 0.2rem !important;
+  font-size: x-large;
+}
+
+.redoBtn {
+  margin-right: 10px;
 }

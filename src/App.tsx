@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <div>
-      <Board data={data} theme="light" />
+      <Board data={data} />
     </div>
   );
 };

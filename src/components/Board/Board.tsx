@@ -6,7 +6,12 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Board = ({ data, theme }: { data: number[][]; theme: string }) => {
+import { IoArrowRedo, IoArrowUndo } from "react-icons/io5";
+import { BiMoon, BiSun } from "react-icons/bi";
+import { IoIosColorPalette } from "react-icons/io";
+import { VscDebugRestart } from "react-icons/vsc";
+
+const Board = ({ data }: { data: number[][] }) => {
   let controlButtons = [
     [0, 1, 2, 3, 4],
     [5, 6, 7, 8, 9],
@@ -28,6 +33,7 @@ const Board = ({ data, theme }: { data: number[][]; theme: string }) => {
   const [boardData, setBoardData] = useState<BoardDataType[][]>(board);
   const [history, setHistory] = useState<BoardDataType[][][]>([board]);
   const [time, setTime] = useState<number>(0);
+  const [theme, setTheme] = useState<string>("light");
 
   const countClick = (row: BoardDataType[]) => {
     let res = 0;
@@ -57,7 +63,6 @@ const Board = ({ data, theme }: { data: number[][]; theme: string }) => {
   };
 
   const onClickItem = (ir: number, ic: number, clicked: boolean) => {
-    // history.splice(time);
     let newBoardData = boardData.map((row, i) =>
       row.map((x, j) => {
         if (i === ir && j === ic) {
@@ -98,20 +103,36 @@ const Board = ({ data, theme }: { data: number[][]; theme: string }) => {
     <div className={styles.container}>
       <Container>
         <Row className={styles.header}>
-          <Col>
+          <Col xs={4}>
+            <Button className={styles.redoBtn} variant={theme}>
+              <IoIosColorPalette></IoIosColorPalette>
+            </Button>
             <Button variant={theme} onClick={() => reset()}>
-              Chơi lại
+              <VscDebugRestart></VscDebugRestart>
             </Button>
           </Col>
-          <Col xs={5}>
-            <h3>Dò Lô tô</h3>
+          <Col xs={4}>
+            {theme === "light" && (
+              <Button variant={theme} onClick={() => setTheme("dark")}>
+                <BiSun></BiSun>
+              </Button>
+            )}
+            {theme === "dark" && (
+              <Button variant={theme} onClick={() => setTheme("light")}>
+                <BiMoon></BiMoon>
+              </Button>
+            )}
           </Col>
-          <Col>
-            <Button variant={theme} onClick={() => undo()}>
-              🡸
+          <Col xs={4}>
+            <Button
+              className={styles.redoBtn}
+              variant={theme}
+              onClick={() => undo()}
+            >
+              <IoArrowUndo></IoArrowUndo>
             </Button>
             <Button variant={theme} onClick={() => redo()}>
-              🡺
+              <IoArrowRedo></IoArrowRedo>
             </Button>
           </Col>
         </Row>
@@ -139,7 +160,12 @@ const Board = ({ data, theme }: { data: number[][]; theme: string }) => {
             </tr>
           ))}
           {controlButtons.map((row, ir) => (
-            <tr key={ir} className={styles.control}>
+            <tr
+              key={ir}
+              className={
+                theme === "light" ? styles.controlLight : styles.controlDark
+              }
+            >
               {row.map((x, ic) => (
                 <td
                   key={ic}
