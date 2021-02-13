@@ -13,11 +13,11 @@
 }
 
 .clicked {
-  background-color: rgb(168, 223, 255);
+  background-color: rgb(81, 211, 172);
 }
 
 .matched {
-  background-color: rgb(255, 164, 103);
+  background-color: rgb(255, 92, 92);
 }
 
 .controlLight {
@@ -28,7 +28,7 @@
 }
 
 .controlClicked {
-  background-color: rgba(255, 164, 103, 0.247) !important;
+  background-color: rgba(255, 92, 92, 0.267) !important;
 }
 
 tbody td {
@@ -38,4 +38,8 @@ tbody td {
 
 .redoBtn {
   margin-right: 10px;
+}
+
+.typeSwitcher {
+  text-align: left !important;
 }
