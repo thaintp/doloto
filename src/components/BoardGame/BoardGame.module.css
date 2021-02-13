@@ -1,0 +1,23 @@
+.clicked {
+  background-color: rgb(81, 211, 172);
+}
+
+.matched {
+  background-color: rgb(255, 92, 92);
+}
+
+.controlLight {
+  background-color: #ccc;
+}
+.controlDark {
+  background-color: #666;
+}
+
+.controlClicked {
+  background-color: rgba(255, 92, 92, 0.267) !important;
+}
+
+tbody td {
+  padding: 0rem !important;
+  font-size: 5vh;
+}

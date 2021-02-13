@@ -2,51 +2,13 @@
   border-color: black !important;
 }
 
-.header {
-  margin: 2% 0;
-  padding: 0 !important;
-}
-
 .container {
   text-align: center;
 }
 
-.clicked {
-  background-color: rgb(81, 211, 172);
-}
-
-.matched {
-  background-color: rgb(255, 92, 92);
-}
-
-.controlLight {
-  background-color: #ccc;
-}
-.controlDark {
-  background-color: #666;
-}
-
-.controlClicked {
-  background-color: rgba(255, 92, 92, 0.267) !important;
-}
-
-tbody td {
-  padding: 0rem !important;
-}
-tbody {
-  font-size: 5vh;
-}
-
-.redoBtn {
-  margin-right: 10px;
-}
-
-.typeSwitcher {
-  text-align: left !important;
-}
-
-/* @media screen and (max-height: 410) {
-  tbody td {
-    font-size: x-small !important;
+@media screen and (min-width: 600px) {
+  .container {
+    width: 600px;
+    margin: 0 auto;
   }
-} */
+}
