@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Board } from "./components";
-import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "./App.module.css";
 
 const App = () => {
   const data: number[][] = [
@@ -15,10 +13,12 @@ const App = () => {
     [7, 21, 41, 56, 87],
     [11, 37, 44, 61, 70],
   ];
+
+  const [theme, setTheme] = useState<string>("light");
+
   return (
     <div>
-      <h3 className={styles.header}>Dò Lô tô</h3>
-      <Board data={data} theme="light" />
+      <Board data={data} theme={theme} />
     </div>
   );
 };

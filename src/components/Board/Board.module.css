@@ -2,6 +2,11 @@
   border-color: black !important;
 }
 
+.header {
+  margin: 2% 0;
+  text-align: center;
+}
+
 .container {
   text-align: center;
 }
@@ -20,4 +25,9 @@
 
 .controlClicked {
   background-color: rgba(255, 164, 103, 0.247) !important;
+}
+
+tbody td {
+  padding: 0.02rem !important;
+  font-size: xx-large;
 }
