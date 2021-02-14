@@ -9,10 +9,10 @@ interface BoardGamePropsType {
   onClickItem: Function;
 }
 
-const controlButtons = [
-  [0, 2, 4, 6, 8],
-  [1, 3, 5, 7, 9],
-];
+// const controlButtons = [
+//   [0, 2, 4, 6, 8],
+//   [1, 3, 5, 7, 9],
+// ];
 
 const BoardGame = (props: BoardGamePropsType) => (
   <Table bordered variant={props.theme}>
@@ -28,15 +28,17 @@ const BoardGame = (props: BoardGamePropsType) => (
                   ? styles.matched
                   : undefined
               }
-              onClick={() => props.onClickItem(ir, ic, x.clicked)}
+              onClick={() => {
+                x.value && props.onClickItem(ir, ic, x.clicked);
+              }}
               key={ic}
             >
-              {x.value}
+              {x.value === 0 ? "" : x.value < 10 ? `0${x.value}` : x.value}
             </td>
           ))}
         </tr>
       ))}
-      {controlButtons.map((row, ir) => (
+      {/* {controlButtons.map((row, ir) => (
         <tr
           key={ir}
           className={
@@ -55,7 +57,7 @@ const BoardGame = (props: BoardGamePropsType) => (
             </td>
           ))}
         </tr>
-      ))}
+      ))} */}
     </tbody>
   </Table>
 );

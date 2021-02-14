@@ -20,14 +20,25 @@ const Board = () => {
   );
 
   const board = (data: number[][]) =>
-    data.map((row) =>
-      row.map((x) => {
-        return {
-          value: x,
-          clicked: false,
-        };
-      })
-    );
+    data.map((row) => {
+      let i = 0;
+      let newRow = [];
+      for (let j = 0; j < 9; ++j) {
+        if (Math.floor(row[i] / 10) === j || (j === 8 && row[i] === 90)) {
+          newRow.push({
+            value: row[i],
+            clicked: false,
+          });
+          ++i;
+        } else {
+          newRow.push({
+            value: 0,
+            clicked: false,
+          });
+        }
+      }
+      return newRow;
+    });
   const [control, setControl] = useState<number | undefined>(undefined);
   const [boardData, setBoardData] = useState<BoardDataType[][]>(
     board(typesData[type[0]][type[1]])
