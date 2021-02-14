@@ -12,6 +12,7 @@ import {
 const Board = () => {
   const [switchType, setSwitchType] = useState<boolean>(false);
   const [type, setType] = useState<number[]>([0, 0]);
+  const [auto, setAuto] = useState<boolean>(false);
 
   let wait = new Audio("https://www.myinstants.com/media/sounds/chan.swf.mp3");
   let win = new Audio(
@@ -111,6 +112,15 @@ const Board = () => {
     setSwitchType(false);
     setTime(0);
   };
+
+  const startAutoPlay = () => {
+    reset();
+    setAuto(true);
+  };
+  const stopAutoPlay = () => {
+    reset();
+    setAuto(false);
+  };
   return (
     <div className={styles.container}>
       <Header
@@ -124,6 +134,9 @@ const Board = () => {
           undo,
           redo,
           switchType,
+          auto,
+          startAutoPlay,
+          stopAutoPlay,
         }}
       />
       {!switchType ? (
