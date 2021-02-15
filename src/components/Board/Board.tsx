@@ -17,7 +17,12 @@ const Board = () => {
     }
     return arr;
   };
+  let wait = new Audio("https://www.myinstants.com/media/sounds/chan.swf.mp3");
+  let win = new Audio(
+    "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
+  );
 
+  const [nextAudio, setNextAudio] = useState<typeof wait>(wait);
   const [switchType, setSwitchType] = useState<boolean>(false);
   const [type, setType] = useState<number[]>([0, 0]);
   const [auto, setAuto] = useState<boolean>(false);
@@ -25,11 +30,6 @@ const Board = () => {
     shuffle(Array.from({ length: 90 }, (_, i) => i + 1))
   );
   const [genNumberIndex, setGenNumberIndex] = useState<number>(0);
-
-  let wait = new Audio("https://www.myinstants.com/media/sounds/chan.swf.mp3");
-  let win = new Audio(
-    "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
-  );
 
   const board = (data: number[][]) =>
     data.map((row) => {
@@ -122,6 +122,7 @@ const Board = () => {
     reset();
     setAuto(true);
     new Audio(`./audio/${genNumbers[0]}.mp3`).play();
+    setNextAudio(new Audio(`./audio/${genNumbers[1]}.mp3`));
   };
   const stopAutoPlay = () => {
     reset();
@@ -130,7 +131,8 @@ const Board = () => {
     setGenNumberIndex(0);
   };
   const play = () => {
-    new Audio(`./audio/${genNumbers[genNumberIndex + 1]}.mp3`).play();
+    nextAudio.play();
+    setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     setGenNumberIndex(genNumberIndex + 1);
   };
   return (
