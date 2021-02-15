@@ -32,6 +32,7 @@ interface HeaderPropsType {
   stopAutoPlay: Function;
   play: Function;
   toggleShow: Function;
+  full: boolean;
 }
 
 const Header = (props: HeaderPropsType) => {
@@ -49,9 +50,9 @@ const Header = (props: HeaderPropsType) => {
   const confirmAuto = () => {
     if (!props.auto) {
       Swal.fire({
-        title: "Mở tự động kêu số?",
+        title: "Mở kêu số?",
         text:
-          "Mở tính năng tự động kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
+          "Mở tính năng kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
         showCancelButton: true,
         confirmButtonText: "Mở",
         cancelButtonText: "Không",
@@ -62,9 +63,9 @@ const Header = (props: HeaderPropsType) => {
       });
     } else {
       Swal.fire({
-        title: "Tắt tự động kêu số?",
+        title: "Tắt kêu số?",
         text:
-          "Tắt tính năng tự động kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
+          "Tắt tính năng kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
         showCancelButton: true,
         confirmButtonText: "Tắt",
         cancelButtonText: "Không",
@@ -106,6 +107,18 @@ const Header = (props: HeaderPropsType) => {
             </Button>
           )}
         </Col>
+        <Col xs={4} style={{ padding: "0" }}>
+          <Button
+            variant={props.theme}
+            onClick={() => confirmAuto()}
+            className={styles.mrBtn}
+          >
+            <FaBullhorn></FaBullhorn>
+          </Button>
+          <Button variant={props.theme} onClick={() => confirmReset()}>
+            <FaSyncAlt></FaSyncAlt>
+          </Button>
+        </Col>
 
         <Col xs={4} style={{ padding: "0" }}>
           {!props.auto ? (
@@ -130,23 +143,21 @@ const Header = (props: HeaderPropsType) => {
               >
                 <FaTh></FaTh>
               </Button>
-              <Button variant={props.theme} onClick={() => props.play()}>
+              <Button
+                variant={props.theme}
+                onClick={() => props.play()}
+                style={{
+                  backgroundColor:
+                    props.theme === "light"
+                      ? TypesColorLight[props.type[0]]
+                      : TypesColorDark[props.type[0]],
+                }}
+                disabled={props.full}
+              >
                 <FaFan></FaFan>
               </Button>
             </div>
           )}
-        </Col>
-        <Col xs={4} style={{ padding: "0" }}>
-          <Button
-            variant={props.theme}
-            onClick={() => confirmAuto()}
-            className={styles.mrBtn}
-          >
-            <FaBullhorn></FaBullhorn>
-          </Button>
-          <Button variant={props.theme} onClick={() => confirmReset()}>
-            <FaSyncAlt></FaSyncAlt>
-          </Button>
         </Col>
       </Row>
     </Container>

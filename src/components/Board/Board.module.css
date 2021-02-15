@@ -36,3 +36,6 @@ body {
 .genNumber {
   font-size: 15vh;
 }
+.badge {
+  width: 60%;
+}

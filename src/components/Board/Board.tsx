@@ -1,4 +1,5 @@
 import styles from "./Board.module.css";
+import Swal from "sweetalert2";
 import { useState } from "react";
 import Badge from "react-bootstrap/Badge";
 
@@ -27,6 +28,7 @@ const Board = () => {
   const [switchType, setSwitchType] = useState<boolean>(false);
   const [type, setType] = useState<number[]>([0, 0]);
   const [auto, setAuto] = useState<boolean>(false);
+  const [full, setFull] = useState<boolean>(false);
   const [genNumbers, setGenNumbers] = useState<number[]>(
     shuffle(Array.from({ length: 90 }, (_, i) => i + 1))
   );
@@ -74,6 +76,7 @@ const Board = () => {
     setTime(0);
     setGenNumbers(shuffle(genNumbers));
     setGenNumberIndex(0);
+    setShowGen(false);
   };
 
   const undo = () => {
@@ -120,7 +123,10 @@ const Board = () => {
     setHistory([board(typesData[i][j])]);
     setSwitchType(false);
     setTime(0);
-    stopAutoPlay();
+    if (auto) {
+      stopAutoPlay();
+      startAutoPlay();
+    }
   };
   const autoClick = (num: number, pre: typeof boardData | null) => {
     let newBoardData = (pre ?? boardData).map((row, i) =>
@@ -154,8 +160,21 @@ const Board = () => {
   const play = () => {
     nextAudio.play();
     autoClick(genNumbers[genNumberIndex + 1], null);
-    setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     setGenNumberIndex(genNumberIndex + 1);
+    if (genNumberIndex + 2 === 90) {
+      setFull(true);
+      Swal.fire({
+        title: "Đã kêu hết bộ cờ, chơi ván mới?",
+        text: "Xóa hết các nước đi của ván này và chơi ván mới!",
+        showCancelButton: true,
+        confirmButtonText: "Chơi",
+        cancelButtonText: "Không",
+      }).then((result) => {
+        result.isConfirmed && reset();
+      });
+    } else {
+      setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
+    }
   };
   const toggleShow = () => {
     setShowGen(!showGen);
@@ -163,7 +182,7 @@ const Board = () => {
   return (
     <div className="">
       <div className={styles.genNumberContainer}>
-        <Badge variant={theme}>
+        <Badge variant={theme} className={styles.badge}>
           {auto ? (
             <span className={styles.genNumber}>
               {genNumbers[genNumberIndex]}
@@ -189,6 +208,7 @@ const Board = () => {
             stopAutoPlay,
             play,
             toggleShow,
+            full,
           }}
         />
         {!switchType ? (
