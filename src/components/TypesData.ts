@@ -8,15 +8,26 @@ export const Types = [
   "Vàng",
   "Hồng",
 ];
-export const TypesColor = [
-  "#f15e00",
-  "#00ff00",
-  "#00a3ff",
-  "#bcff00",
-  "#a000f1",
-  "#f10000",
-  "#ffff00",
-  "#f100b3",
+
+export const TypesColorLight = [
+  "#ffb585",
+  "#86ff86",
+  "#86d4ff",
+  "#d5ff85",
+  "#d786ff",
+  "#ff8888",
+  "#ffff89",
+  "#ff86e0",
+];
+export const TypesColorDark = [
+  "#b44700",
+  "#00b300",
+  "#0074b4",
+  "#76b400",
+  "#7a00b6",
+  "#b50000",
+  "#b5b500",
+  "#b40086",
 ];
 
 export const TypesData = [

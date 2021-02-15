@@ -11,7 +11,7 @@ import { IoIosColorPalette } from "react-icons/io";
 import { VscDebugRestart } from "react-icons/vsc";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 
-import { TypesColor as typesColor } from "../";
+import { TypesColorLight, TypesColorDark } from "../";
 
 interface HeaderPropsType {
   switchType: boolean;
@@ -59,9 +59,14 @@ const Header = (props: HeaderPropsType) => {
         <Col xs={4} style={{ padding: "0" }}>
           <Button
             className={styles.redoBtn}
-            variant="light"
+            variant={props.theme}
             onClick={() => props.setSwitchType(!props.switchType)}
-            style={{ backgroundColor: typesColor[props.type[0]] }}
+            style={{
+              backgroundColor:
+                props.theme === "light"
+                  ? TypesColorLight[props.type[0]]
+                  : TypesColorDark[props.type[0]],
+            }}
           >
             <IoIosColorPalette></IoIosColorPalette>
           </Button>

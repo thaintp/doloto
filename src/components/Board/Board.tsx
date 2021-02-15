@@ -139,6 +139,7 @@ const Board = () => {
           {...{
             onClickType,
             type,
+            theme,
           }}
         />
       )}

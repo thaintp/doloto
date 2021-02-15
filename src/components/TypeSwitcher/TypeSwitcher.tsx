@@ -4,18 +4,19 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import { Types as types, TypesColor as typesColor } from "../";
+import { Types as types, TypesColorLight, TypesColorDark } from "../";
 
 interface TypeSwitcherPropsType {
   type: number[];
   onClickType: Function;
+  theme: string;
 }
 
 const TypeSwitcher = (props: TypeSwitcherPropsType) => (
   <div>
     <h5 style={{ margin: "20px 0" }}>
       Tờ hiện tại là tờ màu{" "}
-      <span style={{ backgroundColor: typesColor[props.type[0]] }}>
+      <span style={{ backgroundColor: TypesColorLight[props.type[0]] }}>
         {types[props.type[0]]}
       </span>{" "}
       số {props.type[1] + 1}
@@ -35,11 +36,14 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => (
                 {[1, 2].map((t, j) => (
                   <Button
                     style={{
-                      backgroundColor: typesColor[i],
+                      backgroundColor:
+                        props.theme === "light"
+                          ? TypesColorLight[i]
+                          : TypesColorDark[i],
                       margin: "0 5px",
                     }}
                     onClick={() => props.onClickType(i, j)}
-                    variant="light"
+                    variant={props.theme}
                     key={i + j}
                   >
                     {t}

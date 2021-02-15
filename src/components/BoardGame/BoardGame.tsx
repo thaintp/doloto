@@ -1,5 +1,5 @@
 import Table from "react-bootstrap/Table";
-import { TypesColor } from "../";
+import { TypesColorLight, TypesColorDark } from "../";
 
 interface BoardGamePropsType {
   boardData: BoardDataType[][];
@@ -17,7 +17,9 @@ const BoardGame = (props: BoardGamePropsType) => (
             <td
               style={{
                 backgroundColor: x.clicked
-                  ? TypesColor[props.type[0]]
+                  ? props.theme === "light"
+                    ? TypesColorLight[props.type[0]]
+                    : TypesColorDark[props.type[0]]
                   : undefined,
               }}
               onClick={() => {
