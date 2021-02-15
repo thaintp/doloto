@@ -12,3 +12,12 @@
     margin: 0 auto;
   }
 }
+
+tbody td {
+  padding: 0rem !important;
+  font-size: 7vw;
+}
+
+body {
+  padding: 0 5px;
+}

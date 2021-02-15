@@ -1,18 +1,12 @@
 import Table from "react-bootstrap/Table";
-import styles from "./BoardGame.module.css";
+import { TypesColor } from "../";
 
 interface BoardGamePropsType {
   boardData: BoardDataType[][];
   theme: string;
-  control: number | undefined;
-  onClickControl: Function;
   onClickItem: Function;
+  type: number[];
 }
-
-// const controlButtons = [
-//   [0, 2, 4, 6, 8],
-//   [1, 3, 5, 7, 9],
-// ];
 
 const BoardGame = (props: BoardGamePropsType) => (
   <Table bordered variant={props.theme}>
@@ -21,13 +15,11 @@ const BoardGame = (props: BoardGamePropsType) => (
         <tr key={ir}>
           {row.map((x, ic) => (
             <td
-              className={
-                x.clicked
-                  ? styles.clicked
-                  : Math.floor(x.value / 10) === props.control
-                  ? styles.matched
-                  : undefined
-              }
+              style={{
+                backgroundColor: x.clicked
+                  ? TypesColor[props.type[0]]
+                  : undefined,
+              }}
               onClick={() => {
                 x.value && props.onClickItem(ir, ic, x.clicked);
               }}
@@ -38,26 +30,6 @@ const BoardGame = (props: BoardGamePropsType) => (
           ))}
         </tr>
       ))}
-      {/* {controlButtons.map((row, ir) => (
-        <tr
-          key={ir}
-          className={
-            props.theme === "light" ? styles.controlLight : styles.controlDark
-          }
-        >
-          {row.map((x, ic) => (
-            <td
-              key={ic}
-              onClick={() => props.onClickControl(ic, x)}
-              className={
-                props.control === x ? styles.controlClicked : undefined
-              }
-            >
-              {x}
-            </td>
-          ))}
-        </tr>
-      ))} */}
     </tbody>
   </Table>
 );

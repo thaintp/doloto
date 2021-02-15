@@ -1,13 +1,7 @@
 import styles from "./Board.module.css";
 import { useState } from "react";
 
-import {
-  Header,
-  BoardGame,
-  TypeSwitcher,
-  TypesData as typesData,
-  TypesColor as typesColor,
-} from "../";
+import { Header, BoardGame, TypeSwitcher, TypesData as typesData } from "../";
 
 const Board = () => {
   const [switchType, setSwitchType] = useState<boolean>(false);
@@ -39,7 +33,6 @@ const Board = () => {
       }
       return newRow;
     });
-  const [control, setControl] = useState<number | undefined>(undefined);
   const [boardData, setBoardData] = useState<BoardDataType[][]>(
     board(typesData[type[0]][type[1]])
   );
@@ -57,7 +50,6 @@ const Board = () => {
 
   const reset = () => {
     setBoardData(history[0]);
-    setControl(undefined);
     setHistory([history[0]]);
     setTime(0);
   };
@@ -100,26 +92,10 @@ const Board = () => {
     setBoardData(newBoardData);
   };
 
-  const onClickControl = (ic: number, x: number) => {
-    setControl(x);
-    setBoardData(
-      boardData.map((row, i) => {
-        let index = row.findIndex(
-          (data: BoardDataType) => Math.floor(data.value / 10) === x
-        );
-        if (index > -1) {
-          [row[ic], row[index]] = [row[index], row[ic]];
-        }
-        return row;
-      })
-    );
-  };
-
   const onClickType = (i: number, j: number) => {
     setType([i, j]);
     setBoardData(board(typesData[i][j]));
     setHistory([board(typesData[i][j])]);
-    setControl(undefined);
     setSwitchType(false);
     setTime(0);
   };
@@ -137,7 +113,6 @@ const Board = () => {
       <Header
         {...{
           setSwitchType,
-          typesColor,
           type,
           theme,
           setTheme,
@@ -155,16 +130,15 @@ const Board = () => {
           {...{
             boardData,
             theme,
-            control,
-            onClickControl,
             onClickItem,
+            type,
           }}
         />
       ) : (
         <TypeSwitcher
           {...{
-            type,
             onClickType,
+            type,
           }}
         />
       )}
