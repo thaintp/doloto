@@ -35,7 +35,7 @@ interface HeaderPropsType {
 }
 
 const Header = (props: HeaderPropsType) => {
-  const confirmReset = () => {
+  const confirmReset = async () => {
     Swal.fire({
       title: "Chơi ván mới?",
       text: "Xóa hết các nước đi của ván này và chơi ván mới!",
@@ -56,7 +56,10 @@ const Header = (props: HeaderPropsType) => {
         confirmButtonText: "Mở",
         cancelButtonText: "Không",
       }).then((result) => {
-        result.isConfirmed && props.startAutoPlay();
+        if (result.isConfirmed) {
+          // confirmReset();
+          props.startAutoPlay();
+        }
       });
     } else {
       Swal.fire({
@@ -143,7 +146,6 @@ const Header = (props: HeaderPropsType) => {
             <FaBullhorn></FaBullhorn>
           </Button>
           <Button variant={props.theme} onClick={() => confirmReset()}>
-            {/* <VscDebugRestart></VscDebugRestart> */}
             <FaSyncAlt></FaSyncAlt>
           </Button>
         </Col>

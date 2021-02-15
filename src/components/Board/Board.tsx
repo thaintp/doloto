@@ -1,6 +1,7 @@
 import styles from "./Board.module.css";
 import { useState } from "react";
 import Badge from "react-bootstrap/Badge";
+
 import { GiBuffaloHead } from "react-icons/gi";
 
 import { Header, BoardGame, TypeSwitcher, TypesData as typesData } from "../";
@@ -67,10 +68,12 @@ const Board = () => {
     return res;
   };
 
-  const reset = () => {
+  const reset = async () => {
     setBoardData(history[0]);
     setHistory([history[0]]);
     setTime(0);
+    setGenNumbers(shuffle(genNumbers));
+    setGenNumberIndex(0);
   };
 
   const undo = () => {
@@ -159,21 +162,17 @@ const Board = () => {
   };
   return (
     <div className="">
-      {!showGen ? (
-        <div className={styles.genNumberContainer}>
-          <Badge variant={theme}>
-            {auto ? (
-              <span className={styles.genNumber}>
-                {genNumbers[genNumberIndex]}
-              </span>
-            ) : (
-              <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
-            )}
-          </Badge>
-        </div>
-      ) : (
-        genNumbers.slice(0, genNumberIndex).join("-")
-      )}
+      <div className={styles.genNumberContainer}>
+        <Badge variant={theme}>
+          {auto ? (
+            <span className={styles.genNumber}>
+              {genNumbers[genNumberIndex]}
+            </span>
+          ) : (
+            <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
+          )}
+        </Badge>
+      </div>
       <div className={styles.container}>
         <Header
           {...{
@@ -199,6 +198,10 @@ const Board = () => {
               theme,
               onClickItem,
               type,
+              genNumbers,
+              genNumberIndex,
+              showGen,
+              auto,
             }}
           />
         ) : (
