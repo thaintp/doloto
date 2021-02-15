@@ -13,6 +13,10 @@ interface BoardGamePropsType {
   auto: boolean;
 }
 const BoardGame = (props: BoardGamePropsType) => {
+  let temp =
+    props.genNumberIndex < 81
+      ? props.boardData
+      : [...props.boardData, props.boardData[0]];
   return !props.showGen ? (
     <Table bordered variant={props.theme} className={styles.container}>
       <tbody>
@@ -50,12 +54,18 @@ const BoardGame = (props: BoardGamePropsType) => {
   ) : (
     <Table bordered variant={props.theme} className={styles.container}>
       <tbody>
-        {props.boardData.map((row, ir) => (
+        {temp.map((row, ir) => (
           <tr key={ir}>
             {row.map((x, ic) => (
               <td
                 key={ic}
                 style={{
+                  backgroundColor:
+                    row.length * ir + ic === props.genNumberIndex
+                      ? props.theme === "light"
+                        ? TypesColorLight[props.type[0]]
+                        : TypesColorDark[props.type[0]]
+                      : undefined,
                   color:
                     row.length * ir + ic <= props.genNumberIndex
                       ? undefined

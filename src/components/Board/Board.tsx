@@ -77,6 +77,7 @@ const Board = () => {
     setGenNumbers(shuffle(genNumbers));
     setGenNumberIndex(0);
     setShowGen(false);
+    setFull(false);
   };
 
   const undo = () => {
