@@ -6,4 +6,4 @@
 - Hỗ trợ Undo / Redo giúp khôi phục thao tác nhầm
 - Hỗ trợ reset sau khi hoàn thành ván chơi
 - Hỗ trợ âm thanh khi Đợi / Kinh
-- Hỗ trợ lọc số giúp tìm nhanh số
+- Hỗ trợ tính năng kêu số (tự động kêu và dò khi nhấn) và xem các số đã kêu theo thứ tự
