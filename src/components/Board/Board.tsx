@@ -127,6 +127,7 @@ const Board = () => {
     reset();
     setAuto(false);
     setGenNumbers(shuffle(genNumbers));
+    setGenNumberIndex(0);
   };
   const play = () => {
     new Audio(`./audio/${genNumbers[genNumberIndex + 1]}.mp3`).play();
