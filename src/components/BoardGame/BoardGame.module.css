@@ -1,0 +1,9 @@
+.container {
+  height: 80%;
+}
+
+tbody td {
+  padding: 0 !important;
+  font-size: 7vw;
+  vertical-align: middle !important;
+}

@@ -1,5 +1,6 @@
 import Table from "react-bootstrap/Table";
 import { TypesColorLight, TypesColorDark } from "../";
+import styles from "./BoardGame.module.css";
 
 interface BoardGamePropsType {
   boardData: BoardDataType[][];
@@ -9,7 +10,7 @@ interface BoardGamePropsType {
 }
 
 const BoardGame = (props: BoardGamePropsType) => (
-  <Table bordered variant={props.theme}>
+  <Table bordered variant={props.theme} className={styles.container}>
     <tbody>
       {props.boardData.map((row, ir) => (
         <tr key={ir}>

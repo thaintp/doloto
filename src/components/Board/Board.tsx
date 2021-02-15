@@ -1,12 +1,30 @@
 import styles from "./Board.module.css";
 import { useState } from "react";
+import Badge from "react-bootstrap/Badge";
+import { GiBuffaloHead } from "react-icons/gi";
 
 import { Header, BoardGame, TypeSwitcher, TypesData as typesData } from "../";
 
 const Board = () => {
+  const shuffle = (arr: number[]) => {
+    let ctr = arr.length;
+    let index;
+
+    while (ctr > 0) {
+      index = Math.floor(Math.random() * ctr);
+      ctr--;
+      [arr[ctr], arr[index]] = [arr[index], arr[ctr]];
+    }
+    return arr;
+  };
+
   const [switchType, setSwitchType] = useState<boolean>(false);
   const [type, setType] = useState<number[]>([0, 0]);
   const [auto, setAuto] = useState<boolean>(false);
+  const [genNumbers, setGenNumbers] = useState<number[]>(
+    shuffle(Array.from({ length: 90 }, (_, i) => i + 1))
+  );
+  const [genNumberIndex, setGenNumberIndex] = useState<number>(0);
 
   let wait = new Audio("https://www.myinstants.com/media/sounds/chan.swf.mp3");
   let win = new Audio(
@@ -103,46 +121,66 @@ const Board = () => {
   const startAutoPlay = () => {
     reset();
     setAuto(true);
+    new Audio(`./audio/${genNumbers[0]}.mp3`).play();
   };
   const stopAutoPlay = () => {
     reset();
     setAuto(false);
+    setGenNumbers(shuffle(genNumbers));
+  };
+  const play = () => {
+    new Audio(`./audio/${genNumbers[genNumberIndex + 1]}.mp3`).play();
+    setGenNumberIndex(genNumberIndex + 1);
   };
   return (
-    <div className={styles.container}>
-      <Header
-        {...{
-          setSwitchType,
-          type,
-          theme,
-          setTheme,
-          reset,
-          undo,
-          redo,
-          switchType,
-          auto,
-          startAutoPlay,
-          stopAutoPlay,
-        }}
-      />
-      {!switchType ? (
-        <BoardGame
+    <div className="">
+      <div className={styles.genNumberContainer}>
+        <Badge variant={theme}>
+          {auto ? (
+            <span className={styles.genNumber}>
+              {genNumbers[genNumberIndex]}
+            </span>
+          ) : (
+            <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
+          )}
+        </Badge>
+      </div>
+      <div className={styles.container}>
+        <Header
           {...{
-            boardData,
-            theme,
-            onClickItem,
-            type,
-          }}
-        />
-      ) : (
-        <TypeSwitcher
-          {...{
-            onClickType,
+            setSwitchType,
             type,
             theme,
+            setTheme,
+            reset,
+            undo,
+            redo,
+            switchType,
+            auto,
+            startAutoPlay,
+            stopAutoPlay,
+            play,
           }}
         />
-      )}
+        {!switchType ? (
+          <BoardGame
+            {...{
+              boardData,
+              theme,
+              onClickItem,
+              type,
+            }}
+          />
+        ) : (
+          <TypeSwitcher
+            {...{
+              onClickType,
+              type,
+              theme,
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

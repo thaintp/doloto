@@ -3,6 +3,12 @@
   padding: 0 !important;
 }
 
-.redoBtn {
-  margin-right: 10px;
+.mrBtn {
+  margin-right: 2%;
+}
+
+@media screen and (max-width: 310px) {
+  .mrBtn {
+    margin-right: 1px;
+  }
 }

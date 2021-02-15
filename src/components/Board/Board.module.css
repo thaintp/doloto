@@ -4,6 +4,13 @@
 
 .container {
   text-align: center;
+  margin: auto 0;
+  top: 100%;
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+  position: absolute;
+  width: 98%;
+  height: 80%;
 }
 
 @media screen and (min-width: 600px) {
@@ -13,11 +20,19 @@
   }
 }
 
-tbody td {
-  padding: 0rem !important;
-  font-size: 7vw;
+body {
+  padding: 0 1%;
+  height: 100%;
 }
 
-body {
-  padding: 0 5px;
+.genNumberContainer {
+  position: absolute;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 98%;
+}
+.genNumber {
+  font-size: 15vh;
 }
