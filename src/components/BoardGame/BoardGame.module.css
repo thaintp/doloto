@@ -1,6 +1,8 @@
 .container {
   height: 80%;
   margin: auto;
+  padding-bottom: 1%;
+  bottom: 1%;
 }
 
 tbody td {
@@ -15,5 +17,20 @@ tbody td {
   }
   .container {
     max-width: 600px;
+  }
+}
+@media screen and (max-height: 350px) {
+  tbody td {
+    font-size: 5vh;
+  }
+}
+@media screen and (max-height: 471px) {
+  .spaceBottom {
+    display: inline;
+  }
+}
+@media screen and (min-height: 471px) {
+  .spaceBottom {
+    display: none;
   }
 }
