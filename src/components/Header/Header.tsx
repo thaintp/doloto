@@ -5,12 +5,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Swal from "sweetalert2";
 
-import { GiBuffaloHead } from "react-icons/gi";
 import { IoArrowRedo, IoArrowUndo } from "react-icons/io5";
-import { BiMoon, BiSun } from "react-icons/bi";
-import { IoIosColorPalette } from "react-icons/io";
-import { VscDebugRestart } from "react-icons/vsc";
-import { HiOutlineSpeakerphone } from "react-icons/hi";
+import {
+  FaTh,
+  FaBullhorn,
+  FaFan,
+  FaSyncAlt,
+  FaSun,
+  FaMoon,
+  FaHeart,
+} from "react-icons/fa";
 
 import { TypesColorLight, TypesColorDark } from "../";
 
@@ -27,6 +31,7 @@ interface HeaderPropsType {
   startAutoPlay: Function;
   stopAutoPlay: Function;
   play: Function;
+  toggleShow: Function;
 }
 
 const Header = (props: HeaderPropsType) => {
@@ -81,21 +86,21 @@ const Header = (props: HeaderPropsType) => {
                   : TypesColorDark[props.type[0]],
             }}
           >
-            <IoIosColorPalette></IoIosColorPalette>
+            <FaHeart></FaHeart>
           </Button>
           {props.theme === "light" ? (
             <Button
               variant={props.theme}
               onClick={() => props.setTheme("dark")}
             >
-              <BiSun></BiSun>
+              <FaSun></FaSun>
             </Button>
           ) : (
             <Button
               variant={props.theme}
               onClick={() => props.setTheme("light")}
             >
-              <BiMoon></BiMoon>
+              <FaMoon></FaMoon>
             </Button>
           )}
         </Col>
@@ -116,8 +121,15 @@ const Header = (props: HeaderPropsType) => {
             </div>
           ) : (
             <div>
+              <Button
+                variant={props.theme}
+                onClick={() => props.toggleShow()}
+                className={styles.mrBtn}
+              >
+                <FaTh></FaTh>
+              </Button>
               <Button variant={props.theme} onClick={() => props.play()}>
-                <GiBuffaloHead></GiBuffaloHead>
+                <FaFan></FaFan>
               </Button>
             </div>
           )}
@@ -128,10 +140,11 @@ const Header = (props: HeaderPropsType) => {
             onClick={() => confirmAuto()}
             className={styles.mrBtn}
           >
-            <HiOutlineSpeakerphone></HiOutlineSpeakerphone>
+            <FaBullhorn></FaBullhorn>
           </Button>
           <Button variant={props.theme} onClick={() => confirmReset()}>
-            <VscDebugRestart></VscDebugRestart>
+            {/* <VscDebugRestart></VscDebugRestart> */}
+            <FaSyncAlt></FaSyncAlt>
           </Button>
         </Col>
       </Row>

@@ -29,6 +29,7 @@ const Board = () => {
   const [genNumbers, setGenNumbers] = useState<number[]>(
     shuffle(Array.from({ length: 90 }, (_, i) => i + 1))
   );
+  const [showGen, setShowGen] = useState<boolean>(false);
   const [genNumberIndex, setGenNumberIndex] = useState<number>(0);
 
   const board = (data: number[][]) =>
@@ -153,19 +154,26 @@ const Board = () => {
     setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     setGenNumberIndex(genNumberIndex + 1);
   };
+  const toggleShow = () => {
+    setShowGen(!showGen);
+  };
   return (
     <div className="">
-      <div className={styles.genNumberContainer}>
-        <Badge variant={theme}>
-          {auto ? (
-            <span className={styles.genNumber}>
-              {genNumbers[genNumberIndex]}
-            </span>
-          ) : (
-            <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
-          )}
-        </Badge>
-      </div>
+      {!showGen ? (
+        <div className={styles.genNumberContainer}>
+          <Badge variant={theme}>
+            {auto ? (
+              <span className={styles.genNumber}>
+                {genNumbers[genNumberIndex]}
+              </span>
+            ) : (
+              <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
+            )}
+          </Badge>
+        </div>
+      ) : (
+        genNumbers.slice(0, genNumberIndex).join("-")
+      )}
       <div className={styles.container}>
         <Header
           {...{
@@ -181,6 +189,7 @@ const Board = () => {
             startAutoPlay,
             stopAutoPlay,
             play,
+            toggleShow,
           }}
         />
         {!switchType ? (
