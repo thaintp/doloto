@@ -26,7 +26,7 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
     });
   };
   return (
-    <div>
+    <div className={styles.container}>
       <h5 style={{ margin: "20px 0" }}>
         Tờ hiện tại là tờ màu{" "}
         <span style={{ backgroundColor: TypesColorLight[props.type[0]] }}>

@@ -1,3 +1,7 @@
 .typeSwitcher {
   text-align: left !important;
 }
+
+.container {
+  margin-bottom: 2%;
+}

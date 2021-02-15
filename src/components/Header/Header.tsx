@@ -75,7 +75,7 @@ const Header = (props: HeaderPropsType) => {
     }
   };
   return (
-    <Container>
+    <Container className={styles.container}>
       <Row className={styles.header}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button

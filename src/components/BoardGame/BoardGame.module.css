@@ -7,3 +7,12 @@ tbody td {
   font-size: 7vw;
   vertical-align: middle !important;
 }
+
+@media screen and (min-width: 600px) {
+  tbody td {
+    font-size: xxx-large;
+  }
+  .container {
+    max-width: 600px;
+  }
+}
