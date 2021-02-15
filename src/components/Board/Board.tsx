@@ -68,7 +68,7 @@ const Board = () => {
     return res;
   };
 
-  const reset = async () => {
+  const reset = () => {
     setBoardData(history[0]);
     setHistory([history[0]]);
     setTime(0);
@@ -122,8 +122,8 @@ const Board = () => {
     setTime(0);
     stopAutoPlay();
   };
-  const autoClick = (num: number) => {
-    let newBoardData = boardData.map((row, i) =>
+  const autoClick = (num: number, pre: typeof boardData | null) => {
+    let newBoardData = (pre ?? boardData).map((row, i) =>
       row.map((x, j) => {
         if (num === x.value) {
           let count = countClick(boardData[i]);
@@ -141,7 +141,7 @@ const Board = () => {
     reset();
     setAuto(true);
     new Audio(`./audio/${genNumbers[0]}.mp3`).play();
-    autoClick(genNumbers[0]);
+    autoClick(genNumbers[0], history[0]);
     setNextAudio(new Audio(`./audio/${genNumbers[1]}.mp3`));
   };
   const stopAutoPlay = () => {
@@ -153,7 +153,7 @@ const Board = () => {
 
   const play = () => {
     nextAudio.play();
-    autoClick(genNumbers[genNumberIndex + 1]);
+    autoClick(genNumbers[genNumberIndex + 1], null);
     setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     setGenNumberIndex(genNumberIndex + 1);
   };

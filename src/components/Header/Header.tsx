@@ -57,7 +57,6 @@ const Header = (props: HeaderPropsType) => {
         cancelButtonText: "Không",
       }).then((result) => {
         if (result.isConfirmed) {
-          // confirmReset();
           props.startAutoPlay();
         }
       });
