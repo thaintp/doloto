@@ -116,12 +116,28 @@ const Board = () => {
     setHistory([board(typesData[i][j])]);
     setSwitchType(false);
     setTime(0);
+    stopAutoPlay();
   };
-
+  const autoClick = (num: number) => {
+    let newBoardData = boardData.map((row, i) =>
+      row.map((x, j) => {
+        if (num === x.value) {
+          let count = countClick(boardData[i]);
+          if (count === 4) {
+            win.play();
+          }
+          return { ...x, clicked: true };
+        }
+        return x;
+      })
+    );
+    setBoardData(newBoardData);
+  };
   const startAutoPlay = () => {
     reset();
     setAuto(true);
     new Audio(`./audio/${genNumbers[0]}.mp3`).play();
+    autoClick(genNumbers[0]);
     setNextAudio(new Audio(`./audio/${genNumbers[1]}.mp3`));
   };
   const stopAutoPlay = () => {
@@ -130,8 +146,10 @@ const Board = () => {
     setGenNumbers(shuffle(genNumbers));
     setGenNumberIndex(0);
   };
+
   const play = () => {
     nextAudio.play();
+    autoClick(genNumbers[genNumberIndex + 1]);
     setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     setGenNumberIndex(genNumberIndex + 1);
   };
