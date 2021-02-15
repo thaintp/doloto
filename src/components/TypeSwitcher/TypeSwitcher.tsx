@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Swal from "sweetalert2";
+import Badge from "react-bootstrap/Badge";
 
 import { Types as types, TypesColorLight, TypesColorDark } from "../";
 
@@ -29,9 +30,17 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
     <div className={styles.container}>
       <h5 style={{ margin: "20px 0" }}>
         Tờ hiện tại là tờ màu{" "}
-        <span style={{ backgroundColor: TypesColorLight[props.type[0]] }}>
+        <Badge
+          variant={props.theme}
+          style={{
+            backgroundColor:
+              props.theme === "light"
+                ? TypesColorLight[props.type[0]]
+                : TypesColorDark[props.type[0]],
+          }}
+        >
           {types[props.type[0]]}
-        </span>{" "}
+        </Badge>{" "}
         số {props.type[1] + 1}
       </h5>
       <h3>Chọn tờ khác?</h3>
@@ -53,12 +62,12 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
                           props.theme === "light"
                             ? TypesColorLight[i]
                             : TypesColorDark[i],
-                        margin: "0 5px",
                       }}
                       onClick={() => confirmSwitch(i, j)}
                       variant={props.theme}
                       key={i + j}
                       disabled={i === props.type[0] && j === props.type[1]}
+                      className={styles.mrBtn}
                     >
                       {t}
                     </Button>

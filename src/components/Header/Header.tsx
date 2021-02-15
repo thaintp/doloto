@@ -112,10 +112,15 @@ const Header = (props: HeaderPropsType) => {
             variant={props.theme}
             onClick={() => confirmAuto()}
             className={styles.mrBtn}
+            disabled={props.switchType}
           >
             <FaBullhorn></FaBullhorn>
           </Button>
-          <Button variant={props.theme} onClick={() => confirmReset()}>
+          <Button
+            variant={props.theme}
+            onClick={() => confirmReset()}
+            disabled={props.switchType}
+          >
             <FaSyncAlt></FaSyncAlt>
           </Button>
         </Col>
@@ -127,10 +132,15 @@ const Header = (props: HeaderPropsType) => {
                 className={styles.mrBtn}
                 variant={props.theme}
                 onClick={() => props.undo()}
+                disabled={props.switchType}
               >
                 <IoArrowUndo></IoArrowUndo>
               </Button>
-              <Button variant={props.theme} onClick={() => props.redo()}>
+              <Button
+                variant={props.theme}
+                onClick={() => props.redo()}
+                disabled={props.switchType}
+              >
                 <IoArrowRedo></IoArrowRedo>
               </Button>
             </div>
@@ -140,6 +150,7 @@ const Header = (props: HeaderPropsType) => {
                 variant={props.theme}
                 onClick={() => props.toggleShow()}
                 className={styles.mrBtn}
+                disabled={props.switchType}
               >
                 <FaTh></FaTh>
               </Button>

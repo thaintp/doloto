@@ -4,4 +4,18 @@
 
 .container {
   margin-bottom: 2%;
+  margin: auto;
+}
+
+@media screen and (min-width: 600px) {
+  tbody td {
+    font-size: xxx-large;
+  }
+  .container {
+    max-width: 480px;
+  }
+}
+
+.mrBtn {
+  margin-right: 2%;
 }

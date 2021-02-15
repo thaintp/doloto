@@ -1,5 +1,6 @@
 .container {
   height: 80%;
+  margin: auto;
 }
 
 tbody td {
