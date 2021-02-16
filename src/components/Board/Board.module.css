@@ -22,7 +22,6 @@
 
 body {
   height: 100%;
-  overflow: auto;
 }
 
 .genNumberContainer {
@@ -38,4 +37,12 @@ body {
 }
 .badge {
   width: 60%;
+}
+@media screen and (max-height: 471px) {
+  .genNumberContainer {
+    display: none;
+  }
+  .container {
+    height: 100%;
+  }
 }

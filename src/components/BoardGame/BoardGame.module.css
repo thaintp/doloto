@@ -17,7 +17,7 @@ tbody td {
     max-width: 600px;
   }
 }
-@media screen and (max-height: 350px) {
+@media screen and (max-height: 471px) {
   tbody td {
     font-size: 5vh;
   }
