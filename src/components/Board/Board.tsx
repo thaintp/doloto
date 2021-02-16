@@ -141,8 +141,12 @@ const Board = ({ theme, setTheme }: BoardType) => {
     setSwitchType(false);
     setTime(0);
     if (auto) {
-      stopAutoPlay();
-      startAutoPlay();
+      const temp = shuffle(genNumbers);
+      setGenNumbers(temp);
+      setGenNumberIndex(0);
+      new Audio(`./audio/${temp[0]}.mp3`).play();
+      autoClick(temp[0], history[0]);
+      setNextAudio(new Audio(`./audio/${temp[1]}.mp3`));
     }
   };
   const autoClick = (num: number, pre: typeof boardData | null) => {
