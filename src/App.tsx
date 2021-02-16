@@ -18,16 +18,18 @@ const App = () => {
         <FaExpand></FaExpand>
       </Button>
       <FullScreen handle={handle}>
-        {handle.active && (
-          <Button
-            onClick={handle.exit}
-            className={styles.enterBtn}
-            variant={theme}
-          >
-            <FaCompress></FaCompress>
-          </Button>
-        )}
-        <Board theme={theme} setTheme={setTheme} />
+        <div id="fullscreen">
+          {handle.active && (
+            <Button
+              onClick={handle.exit}
+              className={styles.enterBtn}
+              variant={theme}
+            >
+              <FaCompress></FaCompress>
+            </Button>
+          )}
+          <Board theme={theme} setTheme={setTheme} />
+        </div>
       </FullScreen>
     </div>
   );

@@ -37,17 +37,22 @@ interface HeaderPropsType {
 
 const Header = (props: HeaderPropsType) => {
   const confirmReset = async () => {
+    const root: HTMLElement | undefined =
+      document.getElementById("fullscreen") ?? undefined;
     Swal.fire({
       title: "Chơi ván mới?",
       text: "Xóa hết các nước đi của ván này và chơi ván mới!",
       showCancelButton: true,
       confirmButtonText: "Chơi",
       cancelButtonText: "Không",
+      target: root,
     }).then((result) => {
       result.isConfirmed && props.reset();
     });
   };
   const confirmAuto = () => {
+    const root: HTMLElement | undefined =
+      document.getElementById("fullscreen") ?? undefined;
     if (!props.auto) {
       Swal.fire({
         title: "Mở kêu số?",
@@ -56,6 +61,7 @@ const Header = (props: HeaderPropsType) => {
         showCancelButton: true,
         confirmButtonText: "Mở",
         cancelButtonText: "Không",
+        target: root,
       }).then((result) => {
         if (result.isConfirmed) {
           props.startAutoPlay();
@@ -69,6 +75,7 @@ const Header = (props: HeaderPropsType) => {
         showCancelButton: true,
         confirmButtonText: "Tắt",
         cancelButtonText: "Không",
+        target: root,
       }).then((result) => {
         result.isConfirmed && props.stopAutoPlay();
       });

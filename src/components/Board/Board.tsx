@@ -166,10 +166,13 @@ const Board = ({ theme, setTheme }: BoardType) => {
     nextAudio.play();
     autoClick(genNumbers[genNumberIndex + 1], null);
     setGenNumberIndex(genNumberIndex + 1);
+    const root: HTMLElement | undefined =
+      document.getElementById("fullscreen") ?? undefined;
     if (genNumberIndex + 2 === 90) {
       setFull(true);
       Swal.fire({
         title: "Đã kêu hết bộ cờ, chơi ván mới?",
+        target: root,
         text: "Xóa hết các nước đi của ván này và chơi ván mới!",
         showCancelButton: true,
         confirmButtonText: "Chơi",
@@ -185,7 +188,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
     setShowGen(!showGen);
   };
   return (
-    <div className="">
+    <div>
       <div className={styles.genNumberContainer}>
         <Badge variant={theme} className={styles.badge}>
           {auto ? (
