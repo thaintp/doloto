@@ -78,10 +78,16 @@ const Board = ({ theme, setTheme }: BoardType) => {
     setBoardData(history[0]);
     setHistory([history[0]]);
     setTime(0);
-    setGenNumbers(shuffle(genNumbers));
-    setGenNumberIndex(0);
     setShowGen(false);
     setFull(false);
+    if (auto) {
+      const temp = shuffle(genNumbers);
+      setGenNumbers(temp);
+      setGenNumberIndex(0);
+      new Audio(`./audio/${temp[0]}.mp3`).play();
+      autoClick(temp[0], history[0]);
+      setNextAudio(new Audio(`./audio/${temp[1]}.mp3`));
+    }
   };
 
   const undo = () => {
