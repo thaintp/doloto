@@ -140,6 +140,8 @@ const Board = ({ theme, setTheme }: BoardType) => {
     setHistory([board(typesData[i][j])]);
     setSwitchType(false);
     setTime(0);
+    setShowGen(false);
+    setFull(false);
     if (auto) {
       const temp = shuffle(genNumbers);
       setGenNumbers(temp);
