@@ -15,6 +15,8 @@ interface TypeSwitcherPropsType {
 }
 
 const TypeSwitcher = (props: TypeSwitcherPropsType) => {
+  const root: HTMLElement | undefined =
+    document.getElementById("fullscreen") ?? undefined;
   const confirmSwitch = (i: number, j: number) => {
     Swal.fire({
       title: "Đổi tờ mới?",
@@ -22,6 +24,7 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
       showCancelButton: true,
       confirmButtonText: "Đổi",
       cancelButtonText: "Không",
+      target: root,
     }).then((result) => {
       result.isConfirmed && props.onClickType(i, j);
     });
