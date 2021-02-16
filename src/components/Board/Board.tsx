@@ -121,8 +121,8 @@ const Board = ({ theme, setTheme }: BoardType) => {
         return x;
       })
     );
+    setTime(history.length);
     setHistory([...history, newBoardData]);
-    setTime(time + 1);
     if (!clicked) {
       let count = countClick(boardData[ir]);
       if (count === 3) {
