@@ -7,7 +7,12 @@ import { GiBuffaloHead } from "react-icons/gi";
 
 import { Header, BoardGame, TypeSwitcher, TypesData as typesData } from "../";
 
-const Board = () => {
+interface BoardType {
+  theme: string;
+  setTheme: Function;
+}
+
+const Board = ({ theme, setTheme }: BoardType) => {
   const shuffle = (arr: number[]) => {
     let ctr = arr.length;
     let index;
@@ -62,7 +67,6 @@ const Board = () => {
     board(typesData[type[0]][type[1]]),
   ]);
   const [time, setTime] = useState<number>(0);
-  const [theme, setTheme] = useState<string>("light");
 
   const countClick = (row: BoardDataType[]) => {
     let res = 0;

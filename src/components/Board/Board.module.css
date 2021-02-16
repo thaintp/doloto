@@ -9,18 +9,18 @@
   transform: translateY(-100%);
   position: absolute;
   height: 80%;
-  width: 98%;
+  width: 100%;
   margin: 0 auto;
+  background-color: rgb(184, 247, 255) !important;
 }
 
 @media screen and (min-width: 600px) {
   .badge {
-    max-width: 480px;
+    max-width: 360px;
   }
 }
 
 body {
-  padding: 0 1%;
   height: 100%;
 }
 
@@ -30,11 +30,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 98%;
+  width: 100%;
+  background-color: rgb(184, 247, 255) !important;
 }
 .genNumber {
   font-size: 15vh;
 }
 .badge {
-  width: 80%;
+  width: 60%;
 }

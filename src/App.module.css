@@ -1,0 +1,8 @@
+.enterBtn {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  -ms-transform: translate(-2%);
+  transform: translate(-2%);
+  z-index: 5;
+}
