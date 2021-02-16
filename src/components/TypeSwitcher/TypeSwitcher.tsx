@@ -6,7 +6,12 @@ import Col from "react-bootstrap/Col";
 import Swal from "sweetalert2";
 import Badge from "react-bootstrap/Badge";
 
-import { Types as types, TypesColorLight, TypesColorDark } from "../";
+import {
+  Types as types,
+  TypesColorLight,
+  TypesColorDark,
+  ThemeColor,
+} from "../";
 
 interface TypeSwitcherPropsType {
   type: number[];
@@ -30,7 +35,13 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
     });
   };
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        backgroundColor: ThemeColor[props.theme === "light" ? 0 : 1],
+        color: props.theme === "light" ? "#000" : "#fff",
+      }}
+    >
       <h5 style={{ margin: "20px 0" }}>
         Tờ hiện tại là tờ màu{" "}
         <Badge

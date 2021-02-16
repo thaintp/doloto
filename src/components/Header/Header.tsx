@@ -16,7 +16,7 @@ import {
   FaHeart,
 } from "react-icons/fa";
 
-import { TypesColorLight, TypesColorDark } from "../";
+import { TypesColorLight, TypesColorDark, ThemeColor } from "../";
 
 interface HeaderPropsType {
   switchType: boolean;
@@ -82,7 +82,10 @@ const Header = (props: HeaderPropsType) => {
     }
   };
   return (
-    <Container className={styles.container}>
+    <Container
+      className={styles.container}
+      style={{ backgroundColor: ThemeColor[props.theme === "light" ? 0 : 1] }}
+    >
       <Row className={styles.header}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button

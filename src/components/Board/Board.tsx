@@ -5,7 +5,13 @@ import Badge from "react-bootstrap/Badge";
 
 import { GiBuffaloHead } from "react-icons/gi";
 
-import { Header, BoardGame, TypeSwitcher, TypesData as typesData } from "../";
+import {
+  ThemeColor,
+  Header,
+  BoardGame,
+  TypeSwitcher,
+  TypesData as typesData,
+} from "../";
 
 interface BoardType {
   theme: string;
@@ -195,7 +201,10 @@ const Board = ({ theme, setTheme }: BoardType) => {
   };
   return (
     <div>
-      <div className={styles.genNumberContainer}>
+      <div
+        className={styles.genNumberContainer}
+        style={{ backgroundColor: ThemeColor[theme === "light" ? 0 : 1] }}
+      >
         <Badge variant={theme} className={styles.badge}>
           {auto ? (
             <span className={styles.genNumber}>
@@ -206,7 +215,10 @@ const Board = ({ theme, setTheme }: BoardType) => {
           )}
         </Badge>
       </div>
-      <div className={styles.container}>
+      <div
+        className={styles.container}
+        style={{ backgroundColor: ThemeColor[theme === "light" ? 0 : 1] }}
+      >
         <Header
           {...{
             setSwitchType,

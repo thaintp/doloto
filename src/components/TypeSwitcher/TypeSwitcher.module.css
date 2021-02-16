@@ -5,7 +5,6 @@
 .container {
   padding-bottom: 1%;
   margin: auto;
-  background-color: rgb(184, 247, 255) !important;
   overflow: auto;
 }
 
