@@ -13,10 +13,10 @@ import {
   FaSyncAlt,
   FaSun,
   FaMoon,
-  FaHeart,
 } from "react-icons/fa";
 
 import { TypesColorLight, TypesColorDark, ThemeColor } from "../";
+import { Number1Icon, Number2Icon } from "../Icons";
 
 interface HeaderPropsType {
   switchType: boolean;
@@ -99,7 +99,11 @@ const Header = (props: HeaderPropsType) => {
                   : TypesColorDark[props.type[0]],
             }}
           >
-            <FaHeart></FaHeart>
+            {props.type[1] === 0 ? (
+              <Number1Icon></Number1Icon>
+            ) : (
+              <Number2Icon></Number2Icon>
+            )}
           </Button>
           {props.theme === "light" ? (
             <Button
