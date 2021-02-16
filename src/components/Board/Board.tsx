@@ -80,13 +80,13 @@ const Board = ({ theme, setTheme }: BoardType) => {
     return res;
   };
 
-  const reset = () => {
+  const reset = (newAuto?: boolean) => {
     setBoardData(history[0]);
     setHistory([history[0]]);
     setTime(0);
     setShowGen(false);
     setFull(false);
-    if (auto) {
+    if (newAuto ?? auto) {
       const temp = shuffle(genNumbers);
       setGenNumbers(temp);
       setGenNumberIndex(0);
@@ -174,7 +174,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
     setNextAudio(new Audio(`./audio/${genNumbers[1]}.mp3`));
   };
   const stopAutoPlay = () => {
-    reset();
+    reset(false);
     setAuto(false);
     setGenNumbers(shuffle(genNumbers));
     setGenNumberIndex(0);
