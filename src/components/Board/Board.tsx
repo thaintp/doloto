@@ -5,6 +5,9 @@ import Badge from "react-bootstrap/Badge";
 
 import { GiBuffaloHead } from "react-icons/gi";
 
+import Button from "react-bootstrap/Button";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+
 import {
   ThemeColor,
   Header,
@@ -45,6 +48,13 @@ const Board = ({ theme, setTheme }: BoardType) => {
   );
   const [showGen, setShowGen] = useState<boolean>(false);
   const [genNumberIndex, setGenNumberIndex] = useState<number>(0);
+  const [speed, setSpeed] = useState<number>(1);
+
+  const audio = (url: string, newSpeed?: number) => {
+    let res = new Audio(url);
+    res.playbackRate = newSpeed ?? speed;
+    return res;
+  };
 
   const board = (data: number[][]) =>
     data.map((row) => {
@@ -92,7 +102,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
       setGenNumberIndex(0);
       new Audio(`./audio/${temp[0]}.mp3`).play();
       autoClick(temp[0], history[0]);
-      setNextAudio(new Audio(`./audio/${temp[1]}.mp3`));
+      setNextAudio(audio(`./audio/${temp[1]}.mp3`));
     }
   };
 
@@ -148,7 +158,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
       setGenNumberIndex(0);
       new Audio(`./audio/${temp[0]}.mp3`).play();
       autoClick(temp[0], history[0]);
-      setNextAudio(new Audio(`./audio/${temp[1]}.mp3`));
+      setNextAudio(audio(`./audio/${temp[1]}.mp3`));
     }
   };
   const autoClick = (num: number, pre: typeof boardData | null) => {
@@ -169,9 +179,9 @@ const Board = ({ theme, setTheme }: BoardType) => {
   const startAutoPlay = () => {
     reset();
     setAuto(true);
-    new Audio(`./audio/${genNumbers[0]}.mp3`).play();
+    audio(`./audio/${genNumbers[0]}.mp3`).play();
     autoClick(genNumbers[0], history[0]);
-    setNextAudio(new Audio(`./audio/${genNumbers[1]}.mp3`));
+    setNextAudio(audio(`./audio/${genNumbers[1]}.mp3`));
   };
   const stopAutoPlay = () => {
     reset(false);
@@ -199,14 +209,44 @@ const Board = ({ theme, setTheme }: BoardType) => {
         result.isConfirmed && reset();
       });
     } else {
-      setNextAudio(new Audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
+      setNextAudio(audio(`./audio/${genNumbers[genNumberIndex + 2]}.mp3`));
     }
   };
   const toggleShow = () => {
     setShowGen(!showGen);
   };
+  const increaseSpeed = () => {
+    if (speed < 3) {
+      setSpeed(speed + 0.2);
+      setNextAudio(
+        audio(`./audio/${genNumbers[genNumberIndex + 1]}.mp3`, speed + 0.2)
+      );
+    }
+  };
+  const decreaseSpeed = () => {
+    if (speed > 0.6) {
+      setSpeed(speed - 0.2);
+      setNextAudio(
+        audio(`./audio/${genNumbers[genNumberIndex + 1]}.mp3`, speed - 0.2)
+      );
+    }
+  };
   return (
     <div>
+      {auto && (
+        <div className={styles.speedBtn}>
+          <Button
+            className={styles.increaseSpeed}
+            variant={theme}
+            onClick={() => increaseSpeed()}
+          >
+            <FaArrowUp></FaArrowUp>
+          </Button>
+          <Button variant={theme} onClick={() => decreaseSpeed()}>
+            <FaArrowDown></FaArrowDown>
+          </Button>
+        </div>
+      )}
       <div
         className={styles.genNumberContainer}
         style={{ backgroundColor: ThemeColor[theme === "light" ? 0 : 1] }}

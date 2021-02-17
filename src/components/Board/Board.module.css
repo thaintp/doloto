@@ -46,3 +46,26 @@ body {
     height: 100%;
   }
 }
+
+.speedBtn {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  -ms-transform: translate(2%);
+  transform: translate(2%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+}
+.increaseSpeed {
+  margin-bottom: 5%;
+}
+
+@media screen and (max-height: 471px) {
+  .enterBtn {
+    display: none !important;
+  }
+  .speedBtn {
+    display: none !important;
+  }
+}
