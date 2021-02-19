@@ -11,7 +11,7 @@
   height: 80%;
   width: 100%;
   margin: 0 auto;
-  overflow: auto;
+  /* overflow: hidden; */
 }
 
 @media screen and (min-width: 600px) {

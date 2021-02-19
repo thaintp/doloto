@@ -1,6 +1,7 @@
 .container {
-  height: 80%;
+  height: 90%;
   margin: auto;
+  overflow: auto;
 }
 
 tbody td {
@@ -17,16 +18,75 @@ tbody td {
     max-width: 600px;
   }
 }
+
 @media screen and (max-height: 471px) {
   tbody td {
     font-size: 5vh;
   }
-}
-@media screen and (max-height: 471px) {
   .spaceBottom {
     display: inline;
   }
 }
+@media screen and (max-height: 810px) {
+  .container {
+    height: 88%;
+  }
+}
+@media screen and (max-height: 672px) {
+  .container {
+    height: 86%;
+  }
+}
+@media screen and (max-height: 578px) {
+  .container {
+    height: 84%;
+  }
+}
+@media screen and (max-height: 505px) {
+  .container {
+    height: 82%;
+  }
+}
+@media screen and (max-height: 471px) {
+  .container {
+    height: 84%;
+  }
+}
+@media screen and (max-height: 407px) {
+  .container {
+    height: 82%;
+  }
+}
+@media screen and (max-height: 361px) {
+  .container {
+    height: 80%;
+  }
+}
+
+@media screen and (max-height: 325px) {
+  .container {
+    height: 78%;
+  }
+}
+@media screen and (max-height: 300px) {
+  .container {
+    height: 76%;
+  }
+}
+@media screen and (max-height: 275px) {
+  .container {
+    height: 70%;
+  }
+}
+@media screen and (max-height: 230px) {
+  .container {
+    height: 65%;
+  }
+  tbody td {
+    font-size: 4.5vh;
+  }
+}
+
 @media screen and (min-height: 471px) {
   .spaceBottom {
     display: none;
