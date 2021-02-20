@@ -1,4 +1,4 @@
-export const ThemeColor = [" #bde2fb ", "#1b4f72 "];
+export const ThemeColor = [" #bde2fb ", "#002b36 "];
 export const Types = [
   "Cam",
   "Xanh lá",
