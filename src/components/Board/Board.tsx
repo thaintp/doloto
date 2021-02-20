@@ -1,6 +1,6 @@
 import styles from "./Board.module.css";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Badge from "react-bootstrap/Badge";
 
 import { GiBuffaloHead } from "react-icons/gi";
@@ -38,23 +38,49 @@ const Board = ({ theme, setTheme }: BoardType) => {
     "https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"
   );
 
-  const [nextAudio, setNextAudio] = useState<typeof wait>(wait);
-  const [switchType, setSwitchType] = useState<boolean>(false);
-  const [type, setType] = useState<number[]>([0, 0]);
-  const [auto, setAuto] = useState<boolean>(false);
-  const [full, setFull] = useState<boolean>(false);
-  const [genNumbers, setGenNumbers] = useState<number[]>(
-    shuffle(Array.from({ length: 90 }, (_, i) => i + 1))
+  const [switchType, setSwitchType] = useState<boolean>(
+    JSON.parse(window.localStorage.getItem("switchType") || "false")
   );
-  const [showGen, setShowGen] = useState<boolean>(false);
-  const [genNumberIndex, setGenNumberIndex] = useState<number>(0);
-  const [speed, setSpeed] = useState<number>(1);
+  const [type, setType] = useState<number[]>(
+    JSON.parse(window.localStorage.getItem("type") || "[0,0]")
+  );
+  const [auto, setAuto] = useState<boolean>(
+    JSON.parse(window.localStorage.getItem("auto") || "false")
+  );
+  const [full, setFull] = useState<boolean>(
+    JSON.parse(window.localStorage.getItem("full") || "false")
+  );
+  const [genNumbers, setGenNumbers] = useState<number[]>(
+    JSON.parse(
+      window.localStorage.getItem("genNumbers") ||
+        JSON.stringify(shuffle(Array.from({ length: 90 }, (_, i) => i + 1)))
+    )
+  );
+  const [showGen, setShowGen] = useState<boolean>(
+    JSON.parse(window.localStorage.getItem("showGen") || "false")
+  );
+  const [genNumberIndex, setGenNumberIndex] = useState<number>(
+    JSON.parse(window.localStorage.getItem("genNumberIndex") || "0")
+  );
+  const [speed, setSpeed] = useState<number>(
+    JSON.parse(window.localStorage.getItem("speed") || "1")
+  );
 
   const audio = (url: string, newSpeed?: number) => {
     let res = new Audio(url);
     res.playbackRate = newSpeed ?? speed;
     return res;
   };
+  const [nextAudio, setNextAudio] = useState<typeof wait>(
+    audio(
+      `./audio/${
+        genNumbers[
+          JSON.parse(window.localStorage.getItem("genNumberIndex") || "0") + 1
+        ]
+      }.mp3`,
+      speed
+    )
+  );
 
   const board = (data: number[][]) =>
     data.map((row) => {
@@ -77,12 +103,31 @@ const Board = ({ theme, setTheme }: BoardType) => {
       return newRow;
     });
   const [boardData, setBoardData] = useState<BoardDataType[][]>(
-    board(typesData[type[0]][type[1]])
+    JSON.parse(
+      window.localStorage.getItem("boardData") ||
+        JSON.stringify(board(typesData[type[0]][type[1]]))
+    )
   );
   const [history, setHistory] = useState<BoardDataType[][][]>([
     board(typesData[type[0]][type[1]]),
   ]);
   const [time, setTime] = useState<number>(0);
+  useEffect(() => {
+    window.localStorage.setItem("boardData", JSON.stringify(boardData));
+    window.localStorage.setItem("time", JSON.stringify(time));
+    window.localStorage.setItem("history", JSON.stringify(history));
+    window.localStorage.setItem("speed", JSON.stringify(speed));
+    window.localStorage.setItem(
+      "genNumberIndex",
+      JSON.stringify(genNumberIndex)
+    );
+    window.localStorage.setItem("genNumbers", JSON.stringify(genNumbers));
+    window.localStorage.setItem("auto", JSON.stringify(auto));
+    window.localStorage.setItem("type", JSON.stringify(type));
+    window.localStorage.setItem("full", JSON.stringify(full));
+    window.localStorage.setItem("switchType", JSON.stringify(switchType));
+    window.localStorage.setItem("showGen", JSON.stringify(showGen));
+  });
 
   const countClick = (row: BoardDataType[]) => {
     let res = 0;
@@ -100,7 +145,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
       const temp = shuffle(genNumbers);
       setGenNumbers(temp);
       setGenNumberIndex(0);
-      new Audio(`./audio/${temp[0]}.mp3`).play();
+      audio(`./audio/${temp[0]}.mp3`, speed).play();
       autoClick(temp[0], history[0]);
       setNextAudio(audio(`./audio/${temp[1]}.mp3`));
     }
@@ -156,7 +201,7 @@ const Board = ({ theme, setTheme }: BoardType) => {
       const temp = shuffle(genNumbers);
       setGenNumbers(temp);
       setGenNumberIndex(0);
-      new Audio(`./audio/${temp[0]}.mp3`).play();
+      audio(`./audio/${temp[0]}.mp3`, speed).play();
       autoClick(temp[0], history[0]);
       setNextAudio(audio(`./audio/${temp[1]}.mp3`));
     }
