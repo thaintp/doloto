@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import styles from "./TypeSwitcher.module.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -5,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Swal from "sweetalert2";
 import Badge from "react-bootstrap/Badge";
+import { AppContext } from "../../App";
 
 import {
   Types as types,
@@ -16,10 +18,10 @@ import {
 interface TypeSwitcherPropsType {
   type: number[];
   onClickType: Function;
-  theme: string;
 }
 
 const TypeSwitcher = (props: TypeSwitcherPropsType) => {
+  const [mode] = useContext(AppContext);
   const root: HTMLElement | undefined =
     document.getElementById("fullscreen") ?? undefined;
   const confirmSwitch = (i: number, j: number) => {
@@ -38,17 +40,17 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
     <div
       className={styles.container}
       style={{
-        backgroundColor: ThemeColor[props.theme === "light" ? 0 : 1],
-        color: props.theme === "light" ? "#000" : "#fff",
+        backgroundColor: ThemeColor[mode === "light" ? 0 : 1],
+        color: mode === "light" ? "#000" : "#fff",
       }}
     >
       <h5 style={{ margin: "20px 0" }}>
         Tờ hiện tại là tờ màu{" "}
         <Badge
-          variant={props.theme}
+          variant={mode}
           style={{
             backgroundColor:
-              props.theme === "light"
+              mode === "light"
                 ? TypesColorLight[props.type[0]]
                 : TypesColorDark[props.type[0]],
           }}
@@ -73,12 +75,12 @@ const TypeSwitcher = (props: TypeSwitcherPropsType) => {
                     <Button
                       style={{
                         backgroundColor:
-                          props.theme === "light"
+                          mode === "light"
                             ? TypesColorLight[i]
                             : TypesColorDark[i],
                       }}
                       onClick={() => confirmSwitch(i, j)}
-                      variant={props.theme}
+                      variant={mode}
                       key={i + j}
                       disabled={i === props.type[0] && j === props.type[1]}
                       className={styles.mrBtn}

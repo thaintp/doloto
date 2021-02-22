@@ -1,10 +1,11 @@
+import { useContext } from "react";
 import Table from "react-bootstrap/Table";
 import { TypesColorLight, TypesColorDark } from "../";
 import styles from "./BoardGame.module.css";
+import { AppContext } from "../../App";
 
 interface BoardGamePropsType {
   boardData: BoardDataType[][];
-  theme: string;
   onClickItem: Function;
   type: number[];
   genNumbers: number[];
@@ -13,12 +14,13 @@ interface BoardGamePropsType {
   auto: boolean;
 }
 const BoardGame = (props: BoardGamePropsType) => {
+  const [mode] = useContext(AppContext);
   let temp =
     props.genNumberIndex < 81
       ? props.boardData
       : [...props.boardData, props.boardData[0]];
   return !props.showGen ? (
-    <Table bordered variant={props.theme} className={styles.container}>
+    <Table bordered variant={mode} className={styles.container}>
       <tbody>
         {props.boardData.map((row, ir) => (
           <tr key={ir}>
@@ -26,14 +28,14 @@ const BoardGame = (props: BoardGamePropsType) => {
               <td
                 style={{
                   backgroundColor: x.clicked
-                    ? props.theme === "light"
+                    ? mode === "light"
                       ? TypesColorLight[props.type[0]]
                       : TypesColorDark[props.type[0]]
                     : undefined,
                   color:
                     x.value > 0
                       ? undefined
-                      : props.theme === "light"
+                      : mode === "light"
                       ? "#ffffff"
                       : "#343a40",
                 }}
@@ -52,7 +54,7 @@ const BoardGame = (props: BoardGamePropsType) => {
       </tbody>
     </Table>
   ) : (
-    <Table bordered variant={props.theme} className={styles.container}>
+    <Table bordered variant={mode} className={styles.container}>
       <tbody>
         {temp.map((row, ir) => (
           <tr key={ir}>
@@ -62,14 +64,14 @@ const BoardGame = (props: BoardGamePropsType) => {
                 style={{
                   backgroundColor:
                     row.length * ir + ic === props.genNumberIndex
-                      ? props.theme === "light"
+                      ? mode === "light"
                         ? TypesColorLight[props.type[0]]
                         : TypesColorDark[props.type[0]]
                       : undefined,
                   color:
                     row.length * ir + ic <= props.genNumberIndex
                       ? undefined
-                      : props.theme === "light"
+                      : mode === "light"
                       ? "#ffffff"
                       : "#343a40",
                 }}

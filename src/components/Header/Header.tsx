@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import styles from "./Header.module.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Swal from "sweetalert2";
+import { AppContext } from "../../App";
 
 import { IoArrowRedo, IoArrowUndo } from "react-icons/io5";
 import {
@@ -22,8 +24,6 @@ interface HeaderPropsType {
   switchType: boolean;
   setSwitchType: Function;
   type: number[];
-  theme: string;
-  setTheme: Function;
   reset: Function;
   undo: Function;
   redo: Function;
@@ -36,6 +36,7 @@ interface HeaderPropsType {
 }
 
 const Header = (props: HeaderPropsType) => {
+  const [mode, setMode] = useContext(AppContext);
   const confirmReset = async () => {
     const root: HTMLElement | undefined =
       document.getElementById("fullscreen") ?? undefined;
@@ -84,17 +85,17 @@ const Header = (props: HeaderPropsType) => {
   return (
     <Container
       className={styles.container}
-      style={{ backgroundColor: ThemeColor[props.theme === "light" ? 0 : 1] }}
+      style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
     >
       <Row className={styles.header}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button
             className={styles.mrBtn}
-            variant={props.theme}
+            variant={mode}
             onClick={() => props.setSwitchType(!props.switchType)}
             style={{
               backgroundColor:
-                props.theme === "light"
+                mode === "light"
                   ? TypesColorLight[props.type[0]]
                   : TypesColorDark[props.type[0]],
             }}
@@ -105,25 +106,19 @@ const Header = (props: HeaderPropsType) => {
               <Number2Icon></Number2Icon>
             )}
           </Button>
-          {props.theme === "light" ? (
-            <Button
-              variant={props.theme}
-              onClick={() => props.setTheme("dark")}
-            >
+          {mode === "light" ? (
+            <Button variant={mode} onClick={() => setMode("dark")}>
               <FaSun></FaSun>
             </Button>
           ) : (
-            <Button
-              variant={props.theme}
-              onClick={() => props.setTheme("light")}
-            >
+            <Button variant={mode} onClick={() => setMode("light")}>
               <FaMoon></FaMoon>
             </Button>
           )}
         </Col>
         <Col xs={4} style={{ padding: "0" }}>
           <Button
-            variant={props.theme}
+            variant={mode}
             onClick={() => confirmAuto()}
             className={styles.mrBtn}
             disabled={props.switchType}
@@ -131,7 +126,7 @@ const Header = (props: HeaderPropsType) => {
             <FaBullhorn></FaBullhorn>
           </Button>
           <Button
-            variant={props.theme}
+            variant={mode}
             onClick={() => confirmReset()}
             disabled={props.switchType}
           >
@@ -144,14 +139,14 @@ const Header = (props: HeaderPropsType) => {
             <div>
               <Button
                 className={styles.mrBtn}
-                variant={props.theme}
+                variant={mode}
                 onClick={() => props.undo()}
                 disabled={props.switchType}
               >
                 <IoArrowUndo></IoArrowUndo>
               </Button>
               <Button
-                variant={props.theme}
+                variant={mode}
                 onClick={() => props.redo()}
                 disabled={props.switchType}
               >
@@ -161,7 +156,7 @@ const Header = (props: HeaderPropsType) => {
           ) : (
             <div>
               <Button
-                variant={props.theme}
+                variant={mode}
                 onClick={() => props.toggleShow()}
                 className={styles.mrBtn}
                 disabled={props.switchType}
@@ -169,11 +164,11 @@ const Header = (props: HeaderPropsType) => {
                 <FaTh></FaTh>
               </Button>
               <Button
-                variant={props.theme}
+                variant={mode}
                 onClick={() => props.play()}
                 style={{
                   backgroundColor:
-                    props.theme === "light"
+                    mode === "light"
                       ? TypesColorLight[props.type[0]]
                       : TypesColorDark[props.type[0]],
                 }}

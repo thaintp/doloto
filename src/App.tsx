@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { createContext } from "react";
 import { Board } from "./components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import styles from "./App.module.css";
 import Button from "react-bootstrap/Button";
 import { FaCompress, FaExpand } from "react-icons/fa";
 
+import { useDarkMode } from "./hooks/";
+
+export const AppContext = createContext<any>(undefined);
+
 const App = () => {
   const handle = useFullScreenHandle();
-  const [theme, setTheme] = useState<string>(
-    window.localStorage.getItem("theme") || "light"
-  );
-  useEffect(() => {
-    window.localStorage.setItem("theme", theme);
-  }, [theme]);
+  const [mode, setMode] = useDarkMode();
 
   return (
-    <div>
-      <Button
-        onClick={handle.enter}
-        className={styles.enterBtn}
-        variant={theme}
-      >
+    <AppContext.Provider value={[mode, setMode]}>
+      <Button onClick={handle.enter} className={styles.enterBtn} variant={mode}>
         <FaExpand></FaExpand>
       </Button>
       <FullScreen handle={handle}>
@@ -29,15 +24,15 @@ const App = () => {
             <Button
               onClick={handle.exit}
               className={styles.enterBtn}
-              variant={theme}
+              variant={mode}
             >
               <FaCompress></FaCompress>
             </Button>
           )}
-          <Board theme={theme} setTheme={setTheme} />
+          <Board />
         </div>
       </FullScreen>
-    </div>
+    </AppContext.Provider>
   );
 };
 

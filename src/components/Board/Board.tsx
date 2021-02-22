@@ -1,12 +1,14 @@
 import styles from "./Board.module.css";
 import Swal from "sweetalert2";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Badge from "react-bootstrap/Badge";
 
 import { GiBuffaloHead } from "react-icons/gi";
 
 import Button from "react-bootstrap/Button";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+
+import { AppContext } from "../../App";
 
 import {
   ThemeColor,
@@ -16,12 +18,8 @@ import {
   TypesData as typesData,
 } from "../";
 
-interface BoardType {
-  theme: string;
-  setTheme: Function;
-}
-
-const Board = ({ theme, setTheme }: BoardType) => {
+const Board = () => {
+  const [mode] = useContext(AppContext);
   const shuffle = (arr: number[]) => {
     let ctr = arr.length;
     let index;
@@ -282,21 +280,21 @@ const Board = ({ theme, setTheme }: BoardType) => {
         <div className={styles.speedBtn}>
           <Button
             className={styles.increaseSpeed}
-            variant={theme}
+            variant={mode}
             onClick={() => increaseSpeed()}
           >
             <FaArrowUp></FaArrowUp>
           </Button>
-          <Button variant={theme} onClick={() => decreaseSpeed()}>
+          <Button variant={mode} onClick={() => decreaseSpeed()}>
             <FaArrowDown></FaArrowDown>
           </Button>
         </div>
       )}
       <div
         className={styles.genNumberContainer}
-        style={{ backgroundColor: ThemeColor[theme === "light" ? 0 : 1] }}
+        style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
-        <Badge variant={theme} className={styles.badge}>
+        <Badge variant={mode} className={styles.badge}>
           {auto ? (
             <span className={styles.genNumber}>
               {genNumbers[genNumberIndex]}
@@ -308,14 +306,12 @@ const Board = ({ theme, setTheme }: BoardType) => {
       </div>
       <div
         className={styles.container}
-        style={{ backgroundColor: ThemeColor[theme === "light" ? 0 : 1] }}
+        style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
         <Header
           {...{
             setSwitchType,
             type,
-            theme,
-            setTheme,
             reset,
             undo,
             redo,
@@ -332,7 +328,6 @@ const Board = ({ theme, setTheme }: BoardType) => {
           <BoardGame
             {...{
               boardData,
-              theme,
               onClickItem,
               type,
               genNumbers,
@@ -346,7 +341,6 @@ const Board = ({ theme, setTheme }: BoardType) => {
             {...{
               onClickType,
               type,
-              theme,
             }}
           />
         )}
