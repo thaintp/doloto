@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import Table from "react-bootstrap/Table";
-import { TypesColorLight, TypesColorDark } from "../";
-import styles from "./BoardGame.module.css";
+import { TypesColorLight, TypesColorDark } from "..";
+import styles from "./index.module.css";
 import { AppContext } from "../../App";
 
-interface BoardGamePropsType {
+interface BoardPropsType {
   boardData: BoardDataType[][];
   onClickItem: Function;
   type: number[];
@@ -13,7 +13,7 @@ interface BoardGamePropsType {
   genNumberIndex: number;
   auto: boolean;
 }
-const BoardGame = (props: BoardGamePropsType) => {
+const Board = (props: BoardPropsType) => {
   const [mode] = useContext(AppContext);
   let temp =
     props.genNumberIndex < 81
@@ -88,4 +88,4 @@ const BoardGame = (props: BoardGamePropsType) => {
   );
 };
 
-export default BoardGame;
+export default Board;

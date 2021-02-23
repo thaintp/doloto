@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { Board } from "./components";
+import { Game } from "./components";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import styles from "./App.module.css";
 import Button from "react-bootstrap/Button";
@@ -29,7 +29,7 @@ const App = () => {
               <FaCompress></FaCompress>
             </Button>
           )}
-          <Board />
+          <Game />
         </div>
       </FullScreen>
     </AppContext.Provider>

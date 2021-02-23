@@ -1,7 +1,7 @@
-export { default as Board } from "./Board/Board";
-export { default as Header } from "./Header/Header";
-export { default as BoardGame } from "./BoardGame/BoardGame";
-export { default as TypeSwitcher } from "./TypeSwitcher/TypeSwitcher";
+export { default as Game } from "./Game";
+export { default as Control } from "./Control";
+export { default as Board } from "./Board";
+export { default as TypeSwitcher } from "./TypeSwitcher";
 export {
   Types,
   TypesColorLight,

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styles from "./Header.module.css";
+import styles from "./index.module.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -17,10 +17,10 @@ import {
   FaMoon,
 } from "react-icons/fa";
 
-import { TypesColorLight, TypesColorDark, ThemeColor } from "../";
+import { TypesColorLight, TypesColorDark, ThemeColor } from "..";
 import { Number1Icon, Number2Icon } from "../Icons";
 
-interface HeaderPropsType {
+interface ControlPropsType {
   switchType: boolean;
   setSwitchType: Function;
   type: number[];
@@ -35,7 +35,7 @@ interface HeaderPropsType {
   full: boolean;
 }
 
-const Header = (props: HeaderPropsType) => {
+const Control = (props: ControlPropsType) => {
   const [mode, setMode] = useContext(AppContext);
   const confirmReset = async () => {
     const root: HTMLElement | undefined =
@@ -87,7 +87,7 @@ const Header = (props: HeaderPropsType) => {
       className={styles.container}
       style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
     >
-      <Row className={styles.header}>
+      <Row className={styles.Control}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button
             className={styles.mrBtn}
@@ -184,4 +184,4 @@ const Header = (props: HeaderPropsType) => {
   );
 };
 
-export default Header;
+export default Control;

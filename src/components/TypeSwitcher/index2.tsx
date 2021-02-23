@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styles from "./TypeSwitcher.module.css";
+import styles from "./index.module.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

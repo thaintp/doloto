@@ -1,6 +1,6 @@
-import styles from "./Board.module.css";
+import styles from "./index.module.css";
 import Swal from "sweetalert2";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, createContext } from "react";
 import Badge from "react-bootstrap/Badge";
 
 import { GiBuffaloHead } from "react-icons/gi";
@@ -10,15 +10,19 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 import { AppContext } from "../../App";
 
+import { useUndo } from "../../hooks";
+
 import {
   ThemeColor,
-  Header,
-  BoardGame,
+  Control,
+  Board,
   TypeSwitcher,
   TypesData as typesData,
-} from "../";
+} from "..";
 
-const Board = () => {
+export const GameContext = createContext<any>(undefined);
+
+const Game = () => {
   const [mode] = useContext(AppContext);
   const shuffle = (arr: number[]) => {
     let ctr = arr.length;
@@ -275,7 +279,7 @@ const Board = () => {
     }
   };
   return (
-    <div>
+    <GameContext.Provider value={undefined}>
       {auto && (
         <div className={styles.speedBtn}>
           <Button
@@ -308,7 +312,7 @@ const Board = () => {
         className={styles.container}
         style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
-        <Header
+        {/* <Control
           {...{
             setSwitchType,
             type,
@@ -325,7 +329,7 @@ const Board = () => {
           }}
         />
         {!switchType ? (
-          <BoardGame
+          <Board
             {...{
               boardData,
               onClickItem,
@@ -343,10 +347,10 @@ const Board = () => {
               type,
             }}
           />
-        )}
+        )} */}
       </div>
-    </div>
+    </GameContext.Provider>
   );
 };
 
-export default Board;
+export default Game;
