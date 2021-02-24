@@ -39,6 +39,16 @@ const undoReducer = (state: any, action: UndoActionType) => {
         future: [],
       };
     }
+
+    case "RESET_TO_FIRST_STATE": {
+      if (past.length === 0 && future.length === 0) return state;
+
+      return {
+        past: [],
+        present: past.length > 0 ? past[0] : present,
+        future: [],
+      };
+    }
   }
 };
 

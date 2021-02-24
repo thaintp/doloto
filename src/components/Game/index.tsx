@@ -53,7 +53,6 @@ const GameReducer = (state: any, action: ActionType) => {
   switch (action.type) {
     case "INIT":
       return {
-        ...state,
         type: [0, 0],
         data: createBoard(TypesData[0][0]),
       };
@@ -70,16 +69,16 @@ const GameReducer = (state: any, action: ActionType) => {
 };
 
 const Game = () => {
-  const [mode, setMode] = useContext(AppContext);
-  const [history, { undo, redo, set }] = useUndo(createEmptyClicked());
-  const [state, dispatch] = useReducer(GameReducer, { undo, redo });
+  const [mode] = useContext(AppContext);
+  const [history, historyDo] = useUndo(createEmptyClicked());
+  const [state, dispatch] = useReducer(GameReducer, {});
 
   useEffect(() => {
     dispatch({ type: "INIT" });
   }, []);
 
   const click = (x: number, y: number) => {
-    set(
+    historyDo.set(
       produce(history.present, (clicked: boolean[][]) => {
         clicked[x][y] = !clicked[x][y];
       })
@@ -92,7 +91,7 @@ const Game = () => {
         className={styles.container}
         style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
-        <Control />
+        <Control historyDo={historyDo} />
         <Board click={click} clicked={history.present} />
       </div>
     </GameContext.Provider>

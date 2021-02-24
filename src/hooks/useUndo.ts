@@ -22,8 +22,15 @@ const useUndo = (initialPresent: any) => {
     (newPresent) => dispatch({ type: "RESET", newPresent }),
     []
   );
+  const resetToFirstState = useCallback(
+    () => dispatch({ type: "RESET_TO_FIRST_STATE" }),
+    []
+  );
 
-  return [state, { set, reset, undo, redo, canUndo, canRedo }];
+  return [
+    state,
+    { set, reset, resetToFirstState, undo, redo, canUndo, canRedo },
+  ];
 };
 
 export default useUndo;

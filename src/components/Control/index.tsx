@@ -1,5 +1,5 @@
-import { useContext } from "react";
-
+import { useContext, useCallback } from "react";
+import Swal from "sweetalert2";
 import { AppContext } from "../../App";
 import { GameContext } from "../Game";
 
@@ -23,14 +23,24 @@ import { Number1Icon, Number2Icon } from "../Icons";
 
 import styles from "./index.module.css";
 
-interface ControlPropsType {
-  undo: Function;
-  redo: Function;
-}
-
-const Control = () => {
+const Control = ({ historyDo }: { historyDo: any }) => {
   const [mode, setMode] = useContext(AppContext);
-  const [{ type, undo, redo }] = useContext(GameContext);
+  const [{ type }] = useContext(GameContext);
+
+  const reset = () => {
+    const root: HTMLElement | undefined =
+      document.getElementById("fullscreen") ?? undefined;
+    Swal.fire({
+      title: "Chơi ván mới?",
+      text: "Xóa hết các nước đi của ván này và chơi ván mới!",
+      showCancelButton: true,
+      confirmButtonText: "Chơi",
+      cancelButtonText: "Không",
+      target: root,
+    }).then(({ isConfirmed }) => {
+      isConfirmed && historyDo.resetToFirstState();
+    });
+  };
 
   return (
     <Container
@@ -77,8 +87,8 @@ const Control = () => {
           </Button>
           <Button
             variant={mode}
-            // onClick={() => confirmReset()}
-            // disabled={props.switchType}
+            onClick={() => reset()}
+            disabled={!historyDo.canUndo && !historyDo.canRedo}
           >
             <FaSyncAlt></FaSyncAlt>
           </Button>
@@ -90,15 +100,15 @@ const Control = () => {
             <Button
               className={styles.mrBtn}
               variant={mode}
-              onClick={() => undo()}
-              // disabled={props.switchType}
+              onClick={() => historyDo.undo()}
+              disabled={!historyDo.canUndo}
             >
               <IoArrowUndo></IoArrowUndo>
             </Button>
             <Button
               variant={mode}
-              onClick={() => redo()}
-              // disabled={props.switchType}
+              onClick={() => historyDo.redo()}
+              disabled={!historyDo.canRedo}
             >
               <IoArrowRedo></IoArrowRedo>
             </Button>

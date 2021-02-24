@@ -32,4 +32,5 @@ type UndoActionType =
   | { type: "UNDO" }
   | { type: "REDO" }
   | { type: "SET"; newPresent: any }
-  | { type: "RESET"; newPresent: any };
+  | { type: "RESET"; newPresent: any }
+  | { type: "RESET_TO_FIRST_STATE" };
