@@ -20,27 +20,31 @@ import {
 
 import { TypesColorLight, TypesColorDark, ThemeColor } from "..";
 import { Number1Icon, Number2Icon } from "../Icons";
+import { fullscreenElem } from "../../utils";
 
 import styles from "./index.module.css";
 
-const Control = ({ historyDo }: { historyDo: any }) => {
-  const [mode, setMode] = useContext(AppContext);
-  const [{ type }] = useContext(GameContext);
+interface ControlPropsType {
+  canUndo: boolean;
+  canRedo: boolean;
+}
 
-  const reset = () => {
-    const root: HTMLElement | undefined =
-      document.getElementById("fullscreen") ?? undefined;
+const Control = ({ canUndo, canRedo }: ControlPropsType) => {
+  const [mode, setMode] = useContext(AppContext);
+  const [{ type }, dispatch] = useContext(GameContext);
+
+  const reset = useCallback(() => {
     Swal.fire({
       title: "Chơi ván mới?",
       text: "Xóa hết các nước đi của ván này và chơi ván mới!",
       showCancelButton: true,
       confirmButtonText: "Chơi",
       cancelButtonText: "Không",
-      target: root,
+      target: fullscreenElem(),
     }).then(({ isConfirmed }) => {
-      isConfirmed && historyDo.resetToFirstState();
+      isConfirmed && dispatch({ type: "RESET" });
     });
-  };
+  }, [dispatch]);
 
   return (
     <Container
@@ -52,7 +56,7 @@ const Control = ({ historyDo }: { historyDo: any }) => {
           <Button
             className={styles.mrBtn}
             variant={mode}
-            // onClick={() => props.setSwitchType(!props.switchType)}
+            onClick={() => dispatch({ type: "TOGGLE_SHOW_SWITCH_TYPE" })}
             style={{
               backgroundColor:
                 mode === "light"
@@ -88,7 +92,7 @@ const Control = ({ historyDo }: { historyDo: any }) => {
           <Button
             variant={mode}
             onClick={() => reset()}
-            disabled={!historyDo.canUndo && !historyDo.canRedo}
+            disabled={!canUndo && !canRedo}
           >
             <FaSyncAlt></FaSyncAlt>
           </Button>
@@ -100,15 +104,15 @@ const Control = ({ historyDo }: { historyDo: any }) => {
             <Button
               className={styles.mrBtn}
               variant={mode}
-              onClick={() => historyDo.undo()}
-              disabled={!historyDo.canUndo}
+              onClick={() => dispatch({ type: "UNDO" })}
+              disabled={!canUndo}
             >
               <IoArrowUndo></IoArrowUndo>
             </Button>
             <Button
               variant={mode}
-              onClick={() => historyDo.redo()}
-              disabled={!historyDo.canRedo}
+              onClick={() => dispatch({ type: "REDO" })}
+              disabled={!canRedo}
             >
               <IoArrowRedo></IoArrowRedo>
             </Button>

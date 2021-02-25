@@ -13,20 +13,26 @@ import styles from "./index.module.css";
 
 import { AppContext } from "../../App";
 
-import { TypesData, ThemeColor, Board, Control } from "..";
+import { TypesData, ThemeColor, Board, Control, TypeSwitcher } from "..";
 
 export const GameContext = createContext<any>(undefined);
 
 type ActionType =
   | { type: "INIT" }
-  | { type: "CLICK"; coordinate: number[] }
-  | { type: "HISTORY_CHANGE"; history: any };
+  | { type: "UNDO" }
+  | { type: "REDO" }
+  | { type: "RESET" }
+  | { type: "TOGGLE_SHOW_SWITCH_TYPE" }
+  | { type: "SWITCH_TYPE"; typeVal: number[] };
 
 interface StateType {
-  type?: number[];
-  data?: number[][];
+  type: number[];
+  data: number[][];
   clicked: boolean[][];
-  mode: string;
+  showSwitchType: boolean;
+  undo: Function;
+  redo: Function;
+  resetToFirstState: Function;
 }
 
 const createEmptyClicked = () =>
@@ -49,19 +55,38 @@ const createBoard = (data: number[][]) =>
     return newRow;
   });
 
-const GameReducer = (state: any, action: ActionType) => {
+const GameReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "INIT":
       return {
+        ...state,
         type: [0, 0],
         data: createBoard(TypesData[0][0]),
+        showSwitchType: false,
       };
-    case "CLICK":
+    case "UNDO":
+      state.undo();
       return state;
-    case "HISTORY_CHANGE":
+    case "REDO":
+      state.redo();
+      return state;
+    case "RESET":
+      state.resetToFirstState();
+      return state;
+    case "TOGGLE_SHOW_SWITCH_TYPE":
       return {
         ...state,
-        clicked: action.history.present,
+        showSwitchType: !state.showSwitchType,
+      };
+    case "SWITCH_TYPE":
+      if (!state.showSwitchType) return state;
+
+      state.resetToFirstState();
+      return {
+        ...state,
+        type: action.typeVal,
+        data: createBoard(TypesData[action.typeVal[0]][action.typeVal[1]]),
+        showSwitchType: false,
       };
     default:
       return state;
@@ -71,11 +96,6 @@ const GameReducer = (state: any, action: ActionType) => {
 const Game = () => {
   const [mode] = useContext(AppContext);
   const [history, historyDo] = useUndo(createEmptyClicked());
-  const [state, dispatch] = useReducer(GameReducer, {});
-
-  useEffect(() => {
-    dispatch({ type: "INIT" });
-  }, []);
 
   const click = (x: number, y: number) => {
     historyDo.set(
@@ -85,14 +105,24 @@ const Game = () => {
     );
   };
 
+  const [state, dispatch] = useReducer(GameReducer, { ...historyDo });
+
+  useEffect(() => {
+    dispatch({ type: "INIT" });
+  }, []);
+
   return state.data ? (
     <GameContext.Provider value={[state, dispatch]}>
       <div
         className={styles.container}
         style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
-        <Control historyDo={historyDo} />
-        <Board click={click} clicked={history.present} />
+        <Control canUndo={historyDo.canUndo} canRedo={historyDo.canRedo} />
+        {state.showSwitchType ? (
+          <TypeSwitcher />
+        ) : (
+          <Board click={click} clicked={history.present} />
+        )}
       </div>
     </GameContext.Provider>
   ) : (
