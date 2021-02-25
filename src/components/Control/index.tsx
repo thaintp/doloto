@@ -31,7 +31,7 @@ interface ControlPropsType {
 
 const Control = ({ canUndo, canRedo }: ControlPropsType) => {
   const [mode, setMode] = useContext(AppContext);
-  const [{ type }, dispatch] = useContext(GameContext);
+  const [{ type, auto }, dispatch] = useContext(GameContext);
 
   const reset = useCallback(() => {
     Swal.fire({
@@ -42,9 +42,39 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
       cancelButtonText: "Không",
       target: fullscreenElem(),
     }).then(({ isConfirmed }) => {
-      isConfirmed && dispatch({ type: "RESET" });
+      if (isConfirmed) {
+        dispatch({ type: "RESET" });
+      }
     });
   }, [dispatch]);
+
+  const toggleAuto = useCallback(() => {
+    if (!auto) {
+      Swal.fire({
+        title: "Mở kêu số?",
+        text:
+          "Mở tính năng kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
+        showCancelButton: true,
+        confirmButtonText: "Mở",
+        cancelButtonText: "Không",
+        target: fullscreenElem(),
+      }).then(({ isConfirmed }) => {
+        isConfirmed && dispatch({ type: "START_AUTO" });
+      });
+    } else {
+      Swal.fire({
+        title: "Tắt kêu số?",
+        text:
+          "Tắt tính năng kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
+        showCancelButton: true,
+        confirmButtonText: "Tắt",
+        cancelButtonText: "Không",
+        target: fullscreenElem(),
+      }).then(({ isConfirmed }) => {
+        isConfirmed && dispatch({ type: "STOP_AUTO" });
+      });
+    }
+  }, [dispatch, auto]);
 
   return (
     <Container
@@ -83,7 +113,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
         <Col xs={4} style={{ padding: "0" }}>
           <Button
             variant={mode}
-            // onClick={() => confirmAuto()}
+            onClick={() => toggleAuto()}
             className={styles.mrBtn}
             // disabled={props.switchType}
           >
@@ -92,32 +122,32 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
           <Button
             variant={mode}
             onClick={() => reset()}
-            disabled={!canUndo && !canRedo}
+            disabled={!auto && !canUndo && !canRedo}
           >
             <FaSyncAlt></FaSyncAlt>
           </Button>
         </Col>
 
         <Col xs={4} style={{ padding: "0" }}>
-          {/* {!props.auto ? ( */}
-          <div>
-            <Button
-              className={styles.mrBtn}
-              variant={mode}
-              onClick={() => dispatch({ type: "UNDO" })}
-              disabled={!canUndo}
-            >
-              <IoArrowUndo></IoArrowUndo>
-            </Button>
-            <Button
-              variant={mode}
-              onClick={() => dispatch({ type: "REDO" })}
-              disabled={!canRedo}
-            >
-              <IoArrowRedo></IoArrowRedo>
-            </Button>
-          </div>
-          {/* ) : (
+          {!auto ? (
+            <div>
+              <Button
+                className={styles.mrBtn}
+                variant={mode}
+                onClick={() => dispatch({ type: "UNDO" })}
+                disabled={!canUndo}
+              >
+                <IoArrowUndo></IoArrowUndo>
+              </Button>
+              <Button
+                variant={mode}
+                onClick={() => dispatch({ type: "REDO" })}
+                disabled={!canRedo}
+              >
+                <IoArrowRedo></IoArrowRedo>
+              </Button>
+            </div>
+          ) : (
             <div>
               <Button
                 variant={mode}
@@ -129,7 +159,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
               </Button>
               <Button
                 variant={mode}
-                // onClick={() => props.play()}
+                onClick={() => dispatch({ type: "PLAY_NEXT" })}
                 style={{
                   backgroundColor:
                     mode === "light"
@@ -141,7 +171,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
                 <FaFan></FaFan>
               </Button>
             </div>
-          )} */}
+          )}
         </Col>
       </Row>
     </Container>

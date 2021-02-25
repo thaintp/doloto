@@ -15,114 +15,90 @@ import { AppContext } from "../../App";
 
 import { TypesData, ThemeColor, Board, Control, TypeSwitcher } from "..";
 
+import Badge from "react-bootstrap/Badge";
+
+import { GiBuffaloHead } from "react-icons/gi";
+
+import Button from "react-bootstrap/Button";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { TypesColorDark, TypesColorLight } from "../TypesData";
+import { gameReducer } from "../../reducers";
+
 export const GameContext = createContext<any>(undefined);
-
-type ActionType =
-  | { type: "INIT" }
-  | { type: "UNDO" }
-  | { type: "REDO" }
-  | { type: "RESET" }
-  | { type: "TOGGLE_SHOW_SWITCH_TYPE" }
-  | { type: "SWITCH_TYPE"; typeVal: number[] };
-
-interface StateType {
-  type: number[];
-  data: number[][];
-  clicked: boolean[][];
-  showSwitchType: boolean;
-  undo: Function;
-  redo: Function;
-  resetToFirstState: Function;
-}
 
 const createEmptyClicked = () =>
   Array(9)
     .fill(false)
     .map(() => Array(9).fill(false));
 
-const createBoard = (data: number[][]) =>
-  data.map((row) => {
-    let i = 0;
-    let newRow = [];
-    for (let j = 0; j < 9; ++j) {
-      if (Math.floor(row[i] / 10) === j || (j === 8 && row[i] === 90)) {
-        newRow.push(row[i]);
-        ++i;
-      } else {
-        newRow.push(0);
-      }
-    }
-    return newRow;
-  });
-
-const GameReducer = (state: StateType, action: ActionType) => {
-  switch (action.type) {
-    case "INIT":
-      return {
-        ...state,
-        type: [0, 0],
-        data: createBoard(TypesData[0][0]),
-        showSwitchType: false,
-      };
-    case "UNDO":
-      state.undo();
-      return state;
-    case "REDO":
-      state.redo();
-      return state;
-    case "RESET":
-      state.resetToFirstState();
-      return state;
-    case "TOGGLE_SHOW_SWITCH_TYPE":
-      return {
-        ...state,
-        showSwitchType: !state.showSwitchType,
-      };
-    case "SWITCH_TYPE":
-      if (!state.showSwitchType) return state;
-
-      state.resetToFirstState();
-      return {
-        ...state,
-        type: action.typeVal,
-        data: createBoard(TypesData[action.typeVal[0]][action.typeVal[1]]),
-        showSwitchType: false,
-      };
-    default:
-      return state;
-  }
-};
-
 const Game = () => {
   const [mode] = useContext(AppContext);
-  const [history, historyDo] = useUndo(createEmptyClicked());
-
-  const click = (x: number, y: number) => {
-    historyDo.set(
-      produce(history.present, (clicked: boolean[][]) => {
-        clicked[x][y] = !clicked[x][y];
-      })
-    );
-  };
-
-  const [state, dispatch] = useReducer(GameReducer, { ...historyDo });
+  const [clicked, clickedDo] = useUndo(createEmptyClicked());
+  const [state, dispatch] = useReducer(gameReducer, { clicked, ...clickedDo });
 
   useEffect(() => {
     dispatch({ type: "INIT" });
   }, []);
 
+  //   if (state.auto && state.genNumberIndex > 0) {
+  //     historyDo.set(
+  //       history.present.map((row: boolean[], ir: number) =>
+  //         row.map((x: Boolean, ic: number) =>
+  //           state.data[ir][ic] === state.curGenNumber ? true : x
+  //         )
+  //       )
+  //     );
+  //   }
+
   return state.data ? (
     <GameContext.Provider value={[state, dispatch]}>
+      {state.auto && (
+        <div className={styles.speedBtn}>
+          <Button
+            className={styles.increaseSpeed}
+            variant={mode}
+            // onClick={() => increaseSpeed()}
+          >
+            <FaArrowUp></FaArrowUp>
+          </Button>
+          <Button
+            variant={mode}
+            // onClick={() => decreaseSpeed()}
+          >
+            <FaArrowDown></FaArrowDown>
+          </Button>
+        </div>
+      )}
+      <div
+        className={styles.genNumberContainer}
+        style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
+      >
+        <Badge variant={mode} className={styles.badge}>
+          {state.auto ? (
+            state.genNumberIndex > 0 ? (
+              <span className={styles.genNumber}>{state.curGenNumber}</span>
+            ) : (
+              <GiBuffaloHead
+                className={styles.genNumber}
+                style={{
+                  color:
+                    mode === "light"
+                      ? TypesColorLight[state.type[0]]
+                      : TypesColorDark[state.type[0]],
+                }}
+              ></GiBuffaloHead>
+            )
+          ) : (
+            <GiBuffaloHead className={styles.genNumber}></GiBuffaloHead>
+          )}
+        </Badge>
+      </div>
       <div
         className={styles.container}
         style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
       >
-        <Control canUndo={historyDo.canUndo} canRedo={historyDo.canRedo} />
-        {state.showSwitchType ? (
-          <TypeSwitcher />
-        ) : (
-          <Board click={click} clicked={history.present} />
-        )}
+        <Control canUndo={clickedDo.canUndo} canRedo={clickedDo.canRedo} />
+        {state.showSwitchType ? <TypeSwitcher /> : <Board clicked={clicked} />}
       </div>
     </GameContext.Provider>
   ) : (

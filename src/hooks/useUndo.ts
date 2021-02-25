@@ -14,10 +14,10 @@ const useUndo = (initialPresent: any) => {
   const undo = useCallback(() => dispatch({ type: "UNDO" }), []);
   const redo = useCallback(() => dispatch({ type: "REDO" }), []);
 
-  const set = useCallback(
-    (newPresent) => dispatch({ type: "SET", newPresent }),
-    []
-  );
+  const set = useCallback((newPresent) => {
+    dispatch({ type: "SET", newPresent });
+    return newPresent;
+  }, []);
   const reset = useCallback(
     (newPresent) => dispatch({ type: "RESET", newPresent }),
     []
@@ -28,7 +28,7 @@ const useUndo = (initialPresent: any) => {
   );
 
   return [
-    state,
+    state.present,
     { set, reset, resetToFirstState, undo, redo, canUndo, canRedo },
   ];
 };

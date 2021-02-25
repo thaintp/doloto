@@ -6,12 +6,11 @@ import { TypesColorLight, TypesColorDark } from "..";
 import styles from "./index.module.css";
 
 interface BoardPropsType {
-  click: Function;
   clicked: boolean[][];
 }
-const Board = ({ click, clicked }: BoardPropsType) => {
+const Board = ({ clicked }: BoardPropsType) => {
   const [mode] = useContext(AppContext);
-  const [{ type, data }, dispatch] = useContext(GameContext);
+  const [{ type, data, auto }, dispatch] = useContext(GameContext);
 
   return (
     <Table bordered variant={mode} className={styles.container}>
@@ -34,7 +33,9 @@ const Board = ({ click, clicked }: BoardPropsType) => {
                       : "#343a40",
                 }}
                 onClick={() => {
-                  x && click(ir, ic);
+                  !auto &&
+                    x &&
+                    dispatch({ type: "CLICK", coordinate: [ir, ic] });
                 }}
                 key={ic}
               >
