@@ -31,7 +31,9 @@ interface ControlPropsType {
 
 const Control = ({ canUndo, canRedo }: ControlPropsType) => {
   const [mode, setMode] = useContext(AppContext);
-  const [{ type, auto }, dispatch] = useContext(GameContext);
+  const [{ type, auto, full, showSwitchType }, dispatch] = useContext(
+    GameContext
+  );
 
   const reset = useCallback(() => {
     Swal.fire({
@@ -115,14 +117,14 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
             variant={mode}
             onClick={() => toggleAuto()}
             className={styles.mrBtn}
-            // disabled={props.switchType}
+            disabled={showSwitchType}
           >
             <FaBullhorn></FaBullhorn>
           </Button>
           <Button
             variant={mode}
             onClick={() => reset()}
-            disabled={!auto && !canUndo && !canRedo}
+            disabled={showSwitchType || (!auto && !canUndo && !canRedo)}
           >
             <FaSyncAlt></FaSyncAlt>
           </Button>
@@ -135,14 +137,14 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
                 className={styles.mrBtn}
                 variant={mode}
                 onClick={() => dispatch({ type: "UNDO" })}
-                disabled={!canUndo}
+                disabled={!canUndo || showSwitchType}
               >
                 <IoArrowUndo></IoArrowUndo>
               </Button>
               <Button
                 variant={mode}
                 onClick={() => dispatch({ type: "REDO" })}
-                disabled={!canRedo}
+                disabled={!canRedo || showSwitchType}
               >
                 <IoArrowRedo></IoArrowRedo>
               </Button>
@@ -151,9 +153,9 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
             <div>
               <Button
                 variant={mode}
-                // onClick={() => props.toggleShow()}
+                onClick={() => dispatch({ type: "TOGGLE_SHOW_GEN" })}
                 className={styles.mrBtn}
-                // disabled={props.switchType}
+                disabled={showSwitchType}
               >
                 <FaTh></FaTh>
               </Button>
@@ -166,7 +168,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
                       ? TypesColorLight[type[0]]
                       : TypesColorDark[type[0]],
                 }}
-                // disabled={props.full}
+                disabled={full}
               >
                 <FaFan></FaFan>
               </Button>

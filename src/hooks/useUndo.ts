@@ -22,10 +22,10 @@ const useUndo = (initialPresent: any) => {
     (newPresent) => dispatch({ type: "RESET", newPresent }),
     []
   );
-  const resetToFirstState = useCallback(
-    () => dispatch({ type: "RESET_TO_FIRST_STATE" }),
-    []
-  );
+  const resetToFirstState = useCallback(() => {
+    dispatch({ type: "RESET_TO_FIRST_STATE" });
+    return state.past.length > 0 ? state.past[0] : state.present;
+  }, [state]);
 
   return [
     state.present,

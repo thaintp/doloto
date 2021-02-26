@@ -50,6 +50,8 @@ const gameReducer = (state: StateType, action: ActionType) => {
         type: [0, 0],
         data: createBoard(TypesData[0][0]),
         showSwitchType: false,
+        showGen: false,
+        full: false,
         auto: false,
         speed: 1,
         genNumbers: gen,
@@ -62,6 +64,7 @@ const gameReducer = (state: StateType, action: ActionType) => {
         clicked: state.set(
           produce(state.clicked, (clicked: boolean[][]) => {
             clicked[x][y] = !clicked[x][y];
+
             if (clicked[x][y]) {
               const count = countClick(clicked[x]);
               if (count === 4) wait.play();
@@ -79,17 +82,17 @@ const gameReducer = (state: StateType, action: ActionType) => {
       state.redo();
       return state;
     case "RESET":
-      state.resetToFirstState();
-      if (state.auto) {
-        return produce(state, (s) => {
+      return produce(state, (s) => {
+        s.clicked = s.resetToFirstState();
+        if (state.auto) {
           const gen = shuffle(s.genNumbers);
           s.genNumbers = gen;
           s.genNumberIndex = 0;
           s.curGenNumber = gen[0];
           s.nextAudio = createAudio(gen[0], s.speed);
-        });
-      }
-      return state;
+          s.full = false;
+        }
+      });
     case "TOGGLE_SHOW_SWITCH_TYPE":
       return {
         ...state,
@@ -98,11 +101,11 @@ const gameReducer = (state: StateType, action: ActionType) => {
     case "SWITCH_TYPE":
       if (!state.showSwitchType) return state;
 
-      state.resetToFirstState();
       return produce(state, (s) => {
         s.type = action.typeVal;
         s.data = createBoard(TypesData[action.typeVal[0]][action.typeVal[1]]);
         s.showSwitchType = false;
+        s.clicked = s.resetToFirstState();
 
         if (state.auto) {
           const gen = shuffle(s.genNumbers);
@@ -110,14 +113,15 @@ const gameReducer = (state: StateType, action: ActionType) => {
           s.genNumberIndex = 0;
           s.curGenNumber = gen[0];
           s.nextAudio = createAudio(gen[0], s.speed);
+          s.full = false;
         }
       });
     case "START_AUTO":
-      state.resetToFirstState();
       return {
         ...state,
         auto: true,
         genNumberIndex: 0,
+        clicked: state.resetToFirstState(),
         curGenNumber: state.genNumbers[0],
         nextAudio: createAudio(state.genNumbers[0], state.speed),
       };
@@ -125,16 +129,47 @@ const gameReducer = (state: StateType, action: ActionType) => {
       return produce(state, (s) => {
         s.auto = false;
         s.genNumbers = shuffle(s.genNumbers);
+        s.full = false;
+        s.clicked = s.resetToFirstState();
       });
     case "PLAY_NEXT":
       state.nextAudio.play();
       return produce(state, (s) => {
         s.curGenNumber = s.genNumbers[s.genNumberIndex];
-        s.genNumberIndex = s.genNumberIndex + 1;
-        s.nextAudio = createAudio(
-          state.genNumbers[s.genNumberIndex],
-          state.speed
+        s.clicked = s.set(
+          s.clicked.map((row: boolean[], ir: number) =>
+            row.map((x: Boolean, ic: number) => {
+              if (s.data[ir][ic] === s.curGenNumber) {
+                const count = countClick(row);
+                if (count === 4) win.play();
+                return true;
+              } else {
+                return x;
+              }
+            })
+          )
         );
+        s.genNumberIndex = s.genNumberIndex + 1;
+        if (s.genNumberIndex === 90) {
+          s.full = true;
+        } else {
+          s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
+        }
+      });
+    case "TOGGLE_SHOW_GEN":
+      return {
+        ...state,
+        showGen: !state.showGen,
+      };
+    case "INC_SPEED":
+      return produce(state, (s) => {
+        s.speed = s.speed < 3 ? s.speed + 0.2 : s.speed;
+        s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
+      });
+    case "DES_SPEED":
+      return produce(state, (s) => {
+        s.speed = s.speed > 0.6 ? s.speed - 0.2 : s.speed;
+        s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
       });
     default:
       return state;

@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useUndo } from "../../hooks";
 
-import produce from "immer";
+import Swal from "sweetalert2";
 
 import styles from "./index.module.css";
 
@@ -23,6 +23,7 @@ import Button from "react-bootstrap/Button";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { TypesColorDark, TypesColorLight } from "../TypesData";
 import { gameReducer } from "../../reducers";
+import { fullscreenElem } from "../../utils";
 
 export const GameContext = createContext<any>(undefined);
 
@@ -40,15 +41,19 @@ const Game = () => {
     dispatch({ type: "INIT" });
   }, []);
 
-  //   if (state.auto && state.genNumberIndex > 0) {
-  //     historyDo.set(
-  //       history.present.map((row: boolean[], ir: number) =>
-  //         row.map((x: Boolean, ic: number) =>
-  //           state.data[ir][ic] === state.curGenNumber ? true : x
-  //         )
-  //       )
-  //     );
-  //   }
+  useEffect(() => {
+    state.full &&
+      Swal.fire({
+        title: "Đã kêu hết bộ cờ, chơi ván mới?",
+        target: fullscreenElem(),
+        text: "Xóa hết các nước đi của ván này và chơi ván mới!",
+        showCancelButton: true,
+        confirmButtonText: "Chơi",
+        cancelButtonText: "Không",
+      }).then(({ isConfirmed }) => {
+        isConfirmed && dispatch({ type: "RESET" });
+      });
+  }, [state.full]);
 
   return state.data ? (
     <GameContext.Provider value={[state, dispatch]}>
@@ -57,13 +62,13 @@ const Game = () => {
           <Button
             className={styles.increaseSpeed}
             variant={mode}
-            // onClick={() => increaseSpeed()}
+            onClick={() => dispatch({ type: "INC_SPEED" })}
           >
             <FaArrowUp></FaArrowUp>
           </Button>
           <Button
             variant={mode}
-            // onClick={() => decreaseSpeed()}
+            onClick={() => dispatch({ type: "DES_SPEED" })}
           >
             <FaArrowDown></FaArrowDown>
           </Button>
