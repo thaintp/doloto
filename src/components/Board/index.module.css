@@ -1,5 +1,5 @@
 .container {
-  height: 90%;
+  height: 88%;
   margin: auto;
   overflow: auto;
 }
@@ -27,11 +27,7 @@ tbody td {
     display: inline;
   }
 }
-@media screen and (max-height: 810px) {
-  .container {
-    height: 88%;
-  }
-}
+
 @media screen and (max-height: 672px) {
   .container {
     height: 86%;

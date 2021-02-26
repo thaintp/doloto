@@ -1,4 +1,7 @@
-export const ThemeColor = [" #bde2fb ", "#002b36 "];
+export const ModeColor = Object({
+  light: "#bde2fb",
+  dark: "#002b36",
+});
 export const Types = [
   "Cam",
   "Xanh lá",

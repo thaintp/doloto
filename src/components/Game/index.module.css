@@ -1,7 +1,3 @@
-* {
-  border-color: black !important;
-}
-
 .container {
   text-align: center;
   top: 100%;
@@ -13,58 +9,8 @@
   margin: 0 auto;
 }
 
-@media screen and (min-width: 600px) {
-  .badge {
-    max-width: 360px;
-  }
-}
-
-body {
-  height: 100%;
-}
-
-.genNumberContainer {
-  position: absolute;
-  height: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-.genNumber {
-  font-size: 15vh;
-}
-.badge {
-  width: 60%;
-}
 @media screen and (max-height: 471px) {
-  .genNumberContainer {
-    display: none;
-  }
   .container {
     height: 100%;
-  }
-}
-
-.speedBtn {
-  position: absolute;
-  top: 2%;
-  left: 2%;
-  -ms-transform: translate(2%);
-  transform: translate(2%);
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-}
-.increaseSpeed {
-  margin-bottom: 5%;
-}
-
-@media screen and (max-height: 471px) {
-  .enterBtn {
-    display: none !important;
-  }
-  .speedBtn {
-    display: none !important;
   }
 }

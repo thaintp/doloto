@@ -11,6 +11,7 @@ type UndoActionType =
 type ActionType =
   | { type: "INIT" }
   | { type: "CLICK"; coordinate: number[] }
+  | { type: "SET_MODE"; mode: string }
   | { type: "UNDO" }
   | { type: "REDO" }
   | { type: "RESET" }
@@ -37,8 +38,21 @@ interface StateType {
   curGenNumber: number;
   nextAudio: any;
   history: any;
+  mode: string;
+  setMode: Function;
+  modeColor?: string;
+  typeColor?: string;
   undo: Function;
   redo: Function;
   set: Function;
   resetToFirstState: Function;
+}
+
+interface GamePropsType {
+  mode: string;
+  setMode: Function;
+}
+
+interface BoardPropsType {
+  clicked: boolean[][];
 }

@@ -1,27 +1,22 @@
 import { useContext } from "react";
-import styles from "./index.module.css";
+import Swal from "sweetalert2";
+
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Swal from "sweetalert2";
 import Badge from "react-bootstrap/Badge";
 
-import { AppContext } from "../../App";
 import { GameContext } from "../Game";
+import { Types } from "../../data";
+import { fullscreenElem, getColor } from "../../utils";
 
-import {
-  Types as types,
-  TypesColorLight,
-  TypesColorDark,
-  ThemeColor,
-} from "../";
-
-import { fullscreenElem } from "../../utils";
+import styles from "./index.module.css";
 
 const TypeSwitcher = () => {
-  const [mode] = useContext(AppContext);
-  const [{ type }, dispatch] = useContext(GameContext);
+  const [{ typeColor, modeColor, type, mode }, dispatch] = useContext(
+    GameContext
+  );
 
   const switchType = (i: number, j: number) => {
     Swal.fire({
@@ -40,7 +35,7 @@ const TypeSwitcher = () => {
     <div
       className={styles.container}
       style={{
-        backgroundColor: ThemeColor[mode === "light" ? 0 : 1],
+        backgroundColor: modeColor,
         color: mode === "light" ? "#000" : "#fff",
       }}
     >
@@ -49,19 +44,16 @@ const TypeSwitcher = () => {
         <Badge
           variant={mode}
           style={{
-            backgroundColor:
-              mode === "light"
-                ? TypesColorLight[type[0]]
-                : TypesColorDark[type[0]],
+            backgroundColor: typeColor,
           }}
         >
-          {types[type[0]]}
+          {Types[type[0]]}
         </Badge>{" "}
         số {type[1] + 1}
       </h5>
       <h3>Chọn tờ khác?</h3>
       <ol>
-        {types.map((typeName, i) => (
+        {Types.map((typeName, i) => (
           <li
             style={{ marginTop: "10px" }}
             className={styles.typeSwitcher}
@@ -74,10 +66,7 @@ const TypeSwitcher = () => {
                   {[1, 2].map((t, j) => (
                     <Button
                       style={{
-                        backgroundColor:
-                          mode === "light"
-                            ? TypesColorLight[i]
-                            : TypesColorDark[i],
+                        backgroundColor: getColor(mode, [i, j]).typeColor,
                       }}
                       onClick={() => switchType(i, j)}
                       variant={mode}

@@ -1,7 +1,5 @@
 import { useContext, useCallback } from "react";
 import Swal from "sweetalert2";
-import { AppContext } from "../../App";
-import { GameContext } from "../Game";
 
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -18,9 +16,9 @@ import {
   FaMoon,
 } from "react-icons/fa";
 
-import { TypesColorLight, TypesColorDark, ThemeColor } from "..";
-import { Number1Icon, Number2Icon } from "../Icons";
+import { GameContext } from "../Game";
 import { fullscreenElem } from "../../utils";
+import { Number1Icon, Number2Icon } from "../Icons";
 
 import styles from "./index.module.css";
 
@@ -30,10 +28,10 @@ interface ControlPropsType {
 }
 
 const Control = ({ canUndo, canRedo }: ControlPropsType) => {
-  const [mode, setMode] = useContext(AppContext);
-  const [{ type, auto, full, showSwitchType }, dispatch] = useContext(
-    GameContext
-  );
+  const [
+    { type, auto, full, showSwitchType, typeColor, modeColor, mode },
+    dispatch,
+  ] = useContext(GameContext);
 
   const reset = useCallback(() => {
     Swal.fire({
@@ -81,19 +79,16 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
   return (
     <Container
       className={styles.container}
-      style={{ backgroundColor: ThemeColor[mode === "light" ? 0 : 1] }}
+      style={{ backgroundColor: modeColor }}
     >
-      <Row className={styles.Control}>
+      <Row className={styles.header}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button
             className={styles.mrBtn}
             variant={mode}
             onClick={() => dispatch({ type: "TOGGLE_SHOW_SWITCH_TYPE" })}
             style={{
-              backgroundColor:
-                mode === "light"
-                  ? TypesColorLight[type[0]]
-                  : TypesColorDark[type[0]],
+              backgroundColor: typeColor,
             }}
           >
             {type[1] === 0 ? (
@@ -103,11 +98,17 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
             )}
           </Button>
           {mode === "light" ? (
-            <Button variant={mode} onClick={() => setMode("dark")}>
+            <Button
+              variant={mode}
+              onClick={() => dispatch({ type: "SET_MODE", mode: "dark" })}
+            >
               <FaSun></FaSun>
             </Button>
           ) : (
-            <Button variant={mode} onClick={() => setMode("light")}>
+            <Button
+              variant={mode}
+              onClick={() => dispatch({ type: "SET_MODE", mode: "light" })}
+            >
               <FaMoon></FaMoon>
             </Button>
           )}
@@ -163,10 +164,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
                 variant={mode}
                 onClick={() => dispatch({ type: "PLAY_NEXT" })}
                 style={{
-                  backgroundColor:
-                    mode === "light"
-                      ? TypesColorLight[type[0]]
-                      : TypesColorDark[type[0]],
+                  backgroundColor: typeColor,
                 }}
                 disabled={full}
               >

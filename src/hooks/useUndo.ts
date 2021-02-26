@@ -18,10 +18,12 @@ const useUndo = (initialPresent: any) => {
     dispatch({ type: "SET", newPresent });
     return newPresent;
   }, []);
+
   const reset = useCallback(
     (newPresent) => dispatch({ type: "RESET", newPresent }),
     []
   );
+
   const resetToFirstState = useCallback(() => {
     dispatch({ type: "RESET_TO_FIRST_STATE" });
     return state.past.length > 0 ? state.past[0] : state.present;

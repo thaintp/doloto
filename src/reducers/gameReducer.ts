@@ -1,46 +1,16 @@
 import produce from "immer";
-import { TypesData } from "../components";
 
-const createBoard = (data: number[][]) =>
-  data.map((row) => {
-    let i = 0;
-    let newRow = [];
-    for (let j = 0; j < 9; ++j) {
-      if (Math.floor(row[i] / 10) === j || (j === 8 && row[i] === 90)) {
-        newRow.push(row[i]);
-        ++i;
-      } else {
-        newRow.push(0);
-      }
-    }
-    return newRow;
-  });
+import { TypesData } from "../data";
+import {
+  shuffle,
+  createBoard,
+  createAudio,
+  countClick,
+  getColor,
+} from "../utils";
 
-const countClick = (row: boolean[]) => {
-  let res = 0;
-  for (let x of row) if (x) ++res;
-  return res;
-};
-const shuffle = (arr: number[]) => {
-  let draft = [...arr];
-  let ctr = draft.length;
-  let index;
-
-  while (ctr > 0) {
-    index = Math.floor(Math.random() * ctr);
-    ctr--;
-    [draft[ctr], draft[index]] = [draft[index], draft[ctr]];
-  }
-  return draft;
-};
-const createAudio = (num: number, newSpeed: number) => {
-  let res = new Audio(`./audio/${num}.mp3`);
-  res.playbackRate = newSpeed;
-  return res;
-};
 const wait = new Audio("./audio/wait.mp3");
 const win = new Audio("./audio/win.mp3");
-
 const gameReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "INIT":
@@ -56,7 +26,9 @@ const gameReducer = (state: StateType, action: ActionType) => {
         speed: 1,
         genNumbers: gen,
         nextAudio: createAudio(gen[0], 1),
+        ...getColor(state.mode, [0, 0]),
       };
+
     case "CLICK":
       const [x, y] = action.coordinate;
       return {
@@ -75,12 +47,23 @@ const gameReducer = (state: StateType, action: ActionType) => {
           })
         ),
       };
+
+    case "SET_MODE":
+      state.setMode(action.mode);
+      return {
+        ...state,
+        mode: action.mode,
+        ...getColor(action.mode, state.type),
+      };
+
     case "UNDO":
       state.undo();
       return state;
+
     case "REDO":
       state.redo();
       return state;
+
     case "RESET":
       return produce(state, (s) => {
         s.clicked = s.resetToFirstState();
@@ -93,11 +76,13 @@ const gameReducer = (state: StateType, action: ActionType) => {
           s.full = false;
         }
       });
+
     case "TOGGLE_SHOW_SWITCH_TYPE":
       return {
         ...state,
         showSwitchType: !state.showSwitchType,
       };
+
     case "SWITCH_TYPE":
       if (!state.showSwitchType) return state;
 
@@ -106,16 +91,18 @@ const gameReducer = (state: StateType, action: ActionType) => {
         s.data = createBoard(TypesData[action.typeVal[0]][action.typeVal[1]]);
         s.showSwitchType = false;
         s.clicked = s.resetToFirstState();
+        s.typeColor = getColor(s.mode, s.type).typeColor;
 
         if (state.auto) {
-          const gen = shuffle(s.genNumbers);
-          s.genNumbers = gen;
+          const draft = shuffle(s.genNumbers);
+          s.genNumbers = draft;
           s.genNumberIndex = 0;
-          s.curGenNumber = gen[0];
-          s.nextAudio = createAudio(gen[0], s.speed);
+          s.curGenNumber = draft[0];
+          s.nextAudio = createAudio(draft[0], s.speed);
           s.full = false;
         }
       });
+
     case "START_AUTO":
       return {
         ...state,
@@ -125,13 +112,16 @@ const gameReducer = (state: StateType, action: ActionType) => {
         curGenNumber: state.genNumbers[0],
         nextAudio: createAudio(state.genNumbers[0], state.speed),
       };
+
     case "STOP_AUTO":
       return produce(state, (s) => {
         s.auto = false;
         s.genNumbers = shuffle(s.genNumbers);
         s.full = false;
+        s.showGen = false;
         s.clicked = s.resetToFirstState();
       });
+
     case "PLAY_NEXT":
       state.nextAudio.play();
       return produce(state, (s) => {
@@ -156,21 +146,25 @@ const gameReducer = (state: StateType, action: ActionType) => {
           s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
         }
       });
+
     case "TOGGLE_SHOW_GEN":
       return {
         ...state,
         showGen: !state.showGen,
       };
+
     case "INC_SPEED":
       return produce(state, (s) => {
         s.speed = s.speed < 3 ? s.speed + 0.2 : s.speed;
         s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
       });
+
     case "DES_SPEED":
       return produce(state, (s) => {
         s.speed = s.speed > 0.6 ? s.speed - 0.2 : s.speed;
         s.nextAudio = createAudio(s.genNumbers[s.genNumberIndex], s.speed);
       });
+
     default:
       return state;
   }

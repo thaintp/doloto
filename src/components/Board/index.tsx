@@ -1,17 +1,13 @@
 import { useContext, useMemo } from "react";
-import { AppContext } from "../../App";
-import { GameContext } from "../Game";
 import Table from "react-bootstrap/Table";
-import { TypesColorLight, TypesColorDark } from "..";
+
+import { GameContext } from "../Game";
+
 import styles from "./index.module.css";
 
-interface BoardPropsType {
-  clicked: boolean[][];
-}
 const Board = ({ clicked }: BoardPropsType) => {
-  const [mode] = useContext(AppContext);
   const [
-    { type, data, auto, showGen, genNumberIndex, genNumbers },
+    { data, auto, showGen, genNumberIndex, genNumbers, typeColor, mode },
     dispatch,
   ] = useContext(GameContext);
 
@@ -38,9 +34,7 @@ const Board = ({ clicked }: BoardPropsType) => {
                 style={{
                   backgroundColor:
                     row.length * ir + ic === genNumberIndex - 1
-                      ? mode === "light"
-                        ? TypesColorLight[type[0]]
-                        : TypesColorDark[type[0]]
+                      ? typeColor
                       : undefined,
                   color:
                     row.length * ir + ic < genNumberIndex
@@ -67,11 +61,7 @@ const Board = ({ clicked }: BoardPropsType) => {
             {row.map((x, ic) => (
               <td
                 style={{
-                  backgroundColor: clicked[ir][ic]
-                    ? mode === "light"
-                      ? TypesColorLight[type[0]]
-                      : TypesColorDark[type[0]]
-                    : undefined,
+                  backgroundColor: clicked[ir][ic] ? typeColor : undefined,
                   color:
                     x > 0
                       ? undefined
