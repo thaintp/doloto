@@ -12,11 +12,8 @@ type UndoActionType =
 type ActionType =
   | { type: "INIT_CACHE"; cached: any }
   | { type: "INIT" }
-  | { type: "CLICK"; coordinate: number[] }
-  | { type: "SET_MODE"; mode: string }
-  | { type: "UNDO" }
-  | { type: "REDO" }
   | { type: "RESET" }
+  | { type: "SET_MODE"; mode: string }
   | { type: "TOGGLE_SHOW_SWITCH_TYPE" }
   | { type: "TOGGLE_SHOW_GEN" }
   | { type: "SWITCH_TYPE"; typeVal: number[] }
@@ -29,7 +26,6 @@ type ActionType =
 interface StateType {
   type: number[];
   data: number[][];
-  clicked: boolean[][];
   showSwitchType: boolean;
   showGen: boolean;
   auto: boolean;
@@ -39,16 +35,12 @@ interface StateType {
   genNumberIndex: number;
   curGenNumber: number;
   nextAudio: any;
-  history: any;
   mode: string;
-  setMode: Function;
   modeColor?: string;
   typeColor?: string;
-  undo: Function;
-  redo: Function;
-  set: Function;
-  initCached: Function;
-  resetToFirstState: Function;
+  setMode: Function;
+  reset: Function;
+  initHistoryCached: Function;
 }
 
 interface GamePropsType {
@@ -56,6 +48,12 @@ interface GamePropsType {
   setMode: Function;
 }
 
+interface ControlPropsType {
+  playNext: Function;
+  historyDo: any;
+}
+
 interface BoardPropsType {
   clicked: boolean[][];
+  click: Function;
 }

@@ -5,10 +5,9 @@ import { GameContext } from "../Game";
 
 import styles from "./index.module.css";
 
-const Board = ({ clicked }: BoardPropsType) => {
+const Board = ({ clicked, click }: BoardPropsType) => {
   const [
     { data, auto, showGen, genNumberIndex, genNumbers, typeColor, mode },
-    dispatch,
   ] = useContext(GameContext);
 
   const temp = useMemo(
@@ -70,9 +69,7 @@ const Board = ({ clicked }: BoardPropsType) => {
                       : "#343a40",
                 }}
                 onClick={() => {
-                  !auto &&
-                    x &&
-                    dispatch({ type: "CLICK", coordinate: [ir, ic] });
+                  !auto && x && click([ir, ic]);
                 }}
                 key={ic}
               >

@@ -14,20 +14,20 @@ const useUndo = (initialPresent: any) => {
   const undo = useCallback(() => dispatch({ type: "UNDO" }), []);
   const redo = useCallback(() => dispatch({ type: "REDO" }), []);
 
-  const set = useCallback((newPresent) => {
-    dispatch({ type: "SET", newPresent });
-    return newPresent;
-  }, []);
+  const set = useCallback(
+    (newPresent) => dispatch({ type: "SET", newPresent }),
+    []
+  );
 
   const reset = useCallback(
     (newPresent) => dispatch({ type: "RESET", newPresent }),
     []
   );
 
-  const resetToFirstState = useCallback(() => {
-    dispatch({ type: "RESET_TO_FIRST_STATE" });
-    return state.past.length > 0 ? state.past[0] : state.present;
-  }, [state]);
+  const resetToFirstState = useCallback(
+    () => dispatch({ type: "RESET_TO_FIRST_STATE" }),
+    []
+  );
 
   const initCached = useCallback(
     (cached: any) => dispatch({ type: "INIT_CACHE", cached }),

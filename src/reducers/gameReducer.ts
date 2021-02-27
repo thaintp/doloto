@@ -1,30 +1,22 @@
 import produce from "immer";
 
 import { TypesData } from "../data";
-import {
-  shuffle,
-  createBoard,
-  createAudio,
-  countClick,
-  getColor,
-} from "../utils";
+import { shuffle, createBoard, createAudio, getColor } from "../utils";
 
-const wait = new Audio("./audio/wait.mp3");
-const win = new Audio("./audio/win.mp3");
 const gameReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case "INIT_CACHE":
       const cached = action.cached.state;
-      state.initCached(action.cached.history);
+      state.initHistoryCached(action.cached.history);
       return {
         ...state,
         ...cached,
-        clicked: cached.clicked,
         nextAudio: createAudio(
           cached.genNumbers[cached.genNumberIndex],
           cached.speed
         ),
       };
+
     case "INIT":
       const gen = shuffle(Array.from({ length: 90 }, (_, i) => i + 1));
       return {
@@ -37,27 +29,9 @@ const gameReducer = (state: StateType, action: ActionType) => {
         auto: false,
         speed: 1,
         genNumbers: gen,
+        genNumberIndex: 0,
         nextAudio: createAudio(gen[0], 1),
         ...getColor(state.mode, [0, 0]),
-      };
-
-    case "CLICK":
-      const [x, y] = action.coordinate;
-      return {
-        ...state,
-        clicked: state.set(
-          produce(state.clicked, (clicked: boolean[][]) => {
-            clicked[x][y] = !clicked[x][y];
-
-            if (clicked[x][y]) {
-              const count = countClick(clicked[x]);
-              if (count === 4) wait.play();
-              else if (count === 5) {
-                win.play();
-              }
-            }
-          })
-        ),
       };
 
     case "SET_MODE":
@@ -68,17 +42,9 @@ const gameReducer = (state: StateType, action: ActionType) => {
         ...getColor(action.mode, state.type),
       };
 
-    case "UNDO":
-      state.undo();
-      return state;
-
-    case "REDO":
-      state.redo();
-      return state;
-
     case "RESET":
+      state.reset();
       return produce(state, (s) => {
-        s.clicked = s.resetToFirstState();
         if (state.auto) {
           const gen = shuffle(s.genNumbers);
           s.genNumbers = gen;
@@ -97,12 +63,12 @@ const gameReducer = (state: StateType, action: ActionType) => {
 
     case "SWITCH_TYPE":
       if (!state.showSwitchType) return state;
+      state.reset();
 
       return produce(state, (s) => {
         s.type = action.typeVal;
         s.data = createBoard(TypesData[action.typeVal[0]][action.typeVal[1]]);
         s.showSwitchType = false;
-        s.clicked = s.resetToFirstState();
         s.typeColor = getColor(s.mode, s.type).typeColor;
 
         if (state.auto) {
@@ -116,41 +82,28 @@ const gameReducer = (state: StateType, action: ActionType) => {
       });
 
     case "START_AUTO":
+      state.reset();
       return {
         ...state,
         auto: true,
         genNumberIndex: 0,
-        clicked: state.resetToFirstState(),
         curGenNumber: state.genNumbers[0],
         nextAudio: createAudio(state.genNumbers[0], state.speed),
       };
 
     case "STOP_AUTO":
+      state.reset();
       return produce(state, (s) => {
         s.auto = false;
         s.genNumbers = shuffle(s.genNumbers);
         s.full = false;
         s.showGen = false;
-        s.clicked = s.resetToFirstState();
       });
 
     case "PLAY_NEXT":
       state.nextAudio.play();
       return produce(state, (s) => {
         s.curGenNumber = s.genNumbers[s.genNumberIndex];
-        s.clicked = s.set(
-          s.clicked.map((row: boolean[], ir: number) =>
-            row.map((x: Boolean, ic: number) => {
-              if (s.data[ir][ic] === s.curGenNumber) {
-                const count = countClick(row);
-                if (count === 4) win.play();
-                return true;
-              } else {
-                return x;
-              }
-            })
-          )
-        );
         s.genNumberIndex = s.genNumberIndex + 1;
         if (s.genNumberIndex === 90) {
           s.full = true;

@@ -1,10 +1,17 @@
 import { useEffect, createContext, useReducer } from "react";
 import Swal from "sweetalert2";
+import produce from "immer";
 
 import { useUndo } from "../../hooks";
 import { gameReducer } from "../../reducers";
 import { Header, Control, Board, TypeSwitcher } from "..";
-import { fullscreenElem, createEmptyClicked } from "../../utils";
+import {
+  fullscreenElem,
+  createEmptyClicked,
+  countClick,
+  waitSound,
+  winSound,
+} from "../../utils";
 
 import styles from "./index.module.css";
 
@@ -15,8 +22,8 @@ const Game = ({ mode, setMode }: GamePropsType) => {
   const [state, dispatch] = useReducer(gameReducer, {
     mode,
     setMode,
-    clicked: history.present,
-    ...historyDo,
+    reset: historyDo.resetToFirstState,
+    initHistoryCached: historyDo.initCached,
   });
 
   useEffect(() => {
@@ -57,6 +64,40 @@ const Game = ({ mode, setMode }: GamePropsType) => {
       });
   }, [state.full]);
 
+  const click = (coordinate: number[]) => {
+    const [x, y] = coordinate;
+    historyDo.set(
+      produce(history.present, (clicked: boolean[][]) => {
+        clicked[x][y] = !clicked[x][y];
+
+        if (clicked[x][y]) {
+          const count = countClick(clicked[x]);
+          if (count === 4) waitSound.play();
+          else if (count === 5) {
+            winSound.play();
+          }
+        }
+      })
+    );
+  };
+
+  const playNext = () => {
+    historyDo.set(
+      history.present.map((row: boolean[], ir: number) =>
+        row.map((x: Boolean, ic: number) => {
+          if (state.data[ir][ic] === state.genNumbers[state.genNumberIndex]) {
+            const count = countClick(row);
+            if (count === 4) winSound.play();
+            return true;
+          } else {
+            return x;
+          }
+        })
+      )
+    );
+    dispatch({ type: "PLAY_NEXT" });
+  };
+
   return state.data ? (
     <GameContext.Provider value={[state, dispatch]}>
       <Header />
@@ -64,11 +105,11 @@ const Game = ({ mode, setMode }: GamePropsType) => {
         className={styles.container}
         style={{ backgroundColor: state.modeColor }}
       >
-        <Control canUndo={historyDo.canUndo} canRedo={historyDo.canRedo} />
+        <Control playNext={playNext} historyDo={historyDo} />
         {state.showSwitchType ? (
           <TypeSwitcher />
         ) : (
-          <Board clicked={history.present} />
+          <Board clicked={history.present} click={click} />
         )}
       </div>
     </GameContext.Provider>

@@ -22,18 +22,13 @@ import { Number1Icon, Number2Icon } from "../Icons";
 
 import styles from "./index.module.css";
 
-interface ControlPropsType {
-  canUndo: boolean;
-  canRedo: boolean;
-}
-
-const Control = ({ canUndo, canRedo }: ControlPropsType) => {
+const Control = ({ playNext, historyDo }: ControlPropsType) => {
   const [
     { type, auto, full, showSwitchType, typeColor, modeColor, mode },
     dispatch,
   ] = useContext(GameContext);
 
-  const reset = useCallback(() => {
+  const startReset = useCallback(() => {
     Swal.fire({
       title: "Chơi ván mới?",
       text: "Xóa hết các nước đi của ván này và chơi ván mới!",
@@ -42,9 +37,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
       cancelButtonText: "Không",
       target: fullscreenElem(),
     }).then(({ isConfirmed }) => {
-      if (isConfirmed) {
-        dispatch({ type: "RESET" });
-      }
+      isConfirmed && dispatch({ type: "RESET" });
     });
   }, [dispatch]);
 
@@ -124,8 +117,11 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
           </Button>
           <Button
             variant={mode}
-            onClick={() => reset()}
-            disabled={showSwitchType || (!auto && !canUndo && !canRedo)}
+            onClick={() => startReset()}
+            disabled={
+              showSwitchType ||
+              (!auto && !historyDo.canUndo && !historyDo.canRedo)
+            }
           >
             <FaSyncAlt></FaSyncAlt>
           </Button>
@@ -137,15 +133,15 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
               <Button
                 className={styles.mrBtn}
                 variant={mode}
-                onClick={() => dispatch({ type: "UNDO" })}
-                disabled={!canUndo || showSwitchType}
+                onClick={() => historyDo.undo()}
+                disabled={!historyDo.canUndo || showSwitchType}
               >
                 <IoArrowUndo></IoArrowUndo>
               </Button>
               <Button
                 variant={mode}
-                onClick={() => dispatch({ type: "REDO" })}
-                disabled={!canRedo || showSwitchType}
+                onClick={() => historyDo.redo()}
+                disabled={!historyDo.canRedo || showSwitchType}
               >
                 <IoArrowRedo></IoArrowRedo>
               </Button>
@@ -162,7 +158,7 @@ const Control = ({ canUndo, canRedo }: ControlPropsType) => {
               </Button>
               <Button
                 variant={mode}
-                onClick={() => dispatch({ type: "PLAY_NEXT" })}
+                onClick={() => playNext()}
                 style={{
                   backgroundColor: typeColor,
                 }}
