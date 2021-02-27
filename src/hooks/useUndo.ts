@@ -29,9 +29,23 @@ const useUndo = (initialPresent: any) => {
     return state.past.length > 0 ? state.past[0] : state.present;
   }, [state]);
 
+  const initCached = useCallback(
+    (cached: any) => dispatch({ type: "INIT_CACHE", cached }),
+    []
+  );
+
   return [
-    state.present,
-    { set, reset, resetToFirstState, undo, redo, canUndo, canRedo },
+    state,
+    {
+      set,
+      reset,
+      resetToFirstState,
+      undo,
+      redo,
+      canUndo,
+      canRedo,
+      initCached,
+    },
   ];
 };
 

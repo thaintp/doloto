@@ -11,17 +11,37 @@ import styles from "./index.module.css";
 export const GameContext = createContext<any>(undefined);
 
 const Game = ({ mode, setMode }: GamePropsType) => {
-  const [clicked, clickedDo] = useUndo(createEmptyClicked());
+  const [history, historyDo] = useUndo(createEmptyClicked());
   const [state, dispatch] = useReducer(gameReducer, {
     mode,
     setMode,
-    clicked,
-    ...clickedDo,
+    clicked: history.present,
+    ...historyDo,
   });
 
   useEffect(() => {
-    dispatch({ type: "INIT" });
+    const cachedStr = window.localStorage.getItem("game");
+    if (cachedStr) {
+      const cached = JSON.parse(cachedStr);
+      if (cached.state.genNumbers) {
+        dispatch({ type: "INIT_CACHE", cached });
+      } else {
+        dispatch({ type: "INIT" });
+      }
+    } else {
+      dispatch({ type: "INIT" });
+    }
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "game",
+      JSON.stringify({
+        history,
+        state,
+      })
+    );
+  }, [state, history]);
 
   useEffect(() => {
     state.full &&
@@ -44,8 +64,12 @@ const Game = ({ mode, setMode }: GamePropsType) => {
         className={styles.container}
         style={{ backgroundColor: state.modeColor }}
       >
-        <Control canUndo={clickedDo.canUndo} canRedo={clickedDo.canRedo} />
-        {state.showSwitchType ? <TypeSwitcher /> : <Board clicked={clicked} />}
+        <Control canUndo={historyDo.canUndo} canRedo={historyDo.canRedo} />
+        {state.showSwitchType ? (
+          <TypeSwitcher />
+        ) : (
+          <Board clicked={history.present} />
+        )}
       </div>
     </GameContext.Provider>
   ) : (

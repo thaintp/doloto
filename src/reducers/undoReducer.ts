@@ -2,6 +2,10 @@ const undoReducer = (state: any, action: UndoActionType) => {
   const { past, present, future } = state;
 
   switch (action.type) {
+    case "INIT_CACHE":
+      return {
+        ...action.cached,
+      };
     case "UNDO": {
       if (past.length === 0) return state;
 

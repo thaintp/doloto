@@ -13,6 +13,18 @@ const wait = new Audio("./audio/wait.mp3");
 const win = new Audio("./audio/win.mp3");
 const gameReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
+    case "INIT_CACHE":
+      const cached = action.cached.state;
+      state.initCached(action.cached.history);
+      return {
+        ...state,
+        ...cached,
+        clicked: cached.clicked,
+        nextAudio: createAudio(
+          cached.genNumbers[cached.genNumberIndex],
+          cached.speed
+        ),
+      };
     case "INIT":
       const gen = shuffle(Array.from({ length: 90 }, (_, i) => i + 1));
       return {

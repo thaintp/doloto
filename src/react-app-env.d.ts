@@ -1,6 +1,7 @@
 /// <reference types="react-scripts" />
 
 type UndoActionType =
+  | { type: "INIT_CACHE"; cached: any }
   | { type: "UNDO" }
   | { type: "REDO" }
   | { type: "SET"; newPresent: any }
@@ -9,6 +10,7 @@ type UndoActionType =
   | { type: "START_AUTO" };
 
 type ActionType =
+  | { type: "INIT_CACHE"; cached: any }
   | { type: "INIT" }
   | { type: "CLICK"; coordinate: number[] }
   | { type: "SET_MODE"; mode: string }
@@ -45,6 +47,7 @@ interface StateType {
   undo: Function;
   redo: Function;
   set: Function;
+  initCached: Function;
   resetToFirstState: Function;
 }
 
