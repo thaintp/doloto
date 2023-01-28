@@ -72,9 +72,10 @@ const Game = ({ mode, setMode }: GamePropsType) => {
 
         if (clicked[x][y]) {
           const count = countClick(clicked[x]);
-          if (count === 4) waitSound.play();
-          else if (count === 5) {
-            winSound.play();
+          if (count === 4) {
+            waitSound().play();
+          } else if (count === 5) {
+            winSound().play();
           }
         }
       })
@@ -87,7 +88,7 @@ const Game = ({ mode, setMode }: GamePropsType) => {
         row.map((x: Boolean, ic: number) => {
           if (state.data[ir][ic] === state.genNumbers[state.genNumberIndex]) {
             const count = countClick(row);
-            if (count === 4) winSound.play();
+            if (count === 4) winSound().play();
             return true;
           } else {
             return x;

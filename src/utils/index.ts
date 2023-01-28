@@ -1,7 +1,7 @@
 import { TypesColorDark, TypesColorLight, ModeColor } from "../data";
 
-export const waitSound = new Audio("./audio/wait.mp3");
-export const winSound = new Audio("./audio/win.mp3");
+export const waitSound = () => new Audio("./audio/wait.mp3");
+export const winSound = () => new Audio("./audio/win.mp3");
 
 export const fullscreenElem = () => {
   return document.getElementById("fullscreen") ?? undefined;
