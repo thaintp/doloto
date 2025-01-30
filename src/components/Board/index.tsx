@@ -4,11 +4,11 @@ import Table from "react-bootstrap/Table";
 import { GameContext } from "../Game";
 
 import styles from "./index.module.css";
+import { BgColor } from "../../data";
 
 const Board = ({ clicked, click }: BoardPropsType) => {
-  const [
-    { data, auto, showGen, genNumberIndex, genNumbers, typeColor, mode },
-  ] = useContext(GameContext);
+  const [{ data, auto, showGen, genNumberIndex, genNumbers, typeColor, mode }] =
+    useContext(GameContext);
 
   const temp = useMemo(
     () =>
@@ -60,13 +60,8 @@ const Board = ({ clicked, click }: BoardPropsType) => {
             {row.map((x, ic) => (
               <td
                 style={{
-                  backgroundColor: clicked[ir][ic] ? typeColor : undefined,
-                  color:
-                    x > 0
-                      ? undefined
-                      : mode === "light"
-                      ? "#ffffff"
-                      : "#343a40",
+                  backgroundColor: clicked[ir][ic] ? typeColor : BgColor[mode],
+                  color: x > 0 ? undefined : BgColor[mode],
                 }}
                 onClick={() => {
                   !auto && x && click([ir, ic]);

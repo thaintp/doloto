@@ -1,6 +1,14 @@
 export const ModeColor = Object({
-  light: "#bde2fb",
-  dark: "#002b36",
+  light: "#C6C6C6",
+  gray: "#ACACAF",
+  sepia: "#C3BCAC",
+  dark: "#292e33",
+});
+export const BgColor = Object({
+  light: "#f8f8f8",
+  gray: "#d7d7db",
+  sepia: "#f4ecd8",
+  dark: "#343a40",
 });
 export const Types = [
   "Cam",

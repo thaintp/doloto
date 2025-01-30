@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { TypesData } from "../data";
+import { BgColor, TypesData } from "../data";
 import { shuffle, createBoard, createAudio, getColor } from "../utils";
 
 const gameReducer = (state: StateType, action: ActionType) => {
@@ -35,11 +35,17 @@ const gameReducer = (state: StateType, action: ActionType) => {
       };
 
     case "SET_MODE":
-      state.setMode(action.mode);
+      const newMode =
+        Object.keys(BgColor)[
+          (Object.keys(BgColor).findIndex((v) => v === state.mode) + 1) %
+            Object.keys(BgColor).length
+        ];
+      const mode = action.mode || newMode;
+      state.setMode(mode);
       return {
         ...state,
-        mode: action.mode,
-        ...getColor(action.mode, state.type),
+        mode: mode,
+        ...getColor(String(mode), state.type),
       };
 
     case "RESET":

@@ -7,14 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import { IoArrowRedo, IoArrowUndo } from "react-icons/io5";
-import {
-  FaTh,
-  FaBullhorn,
-  FaFan,
-  FaSyncAlt,
-  FaSun,
-  FaMoon,
-} from "react-icons/fa";
+import { FaTh, FaFan, FaSyncAlt, FaPalette } from "react-icons/fa";
 
 import { GameContext } from "../Game";
 import { fullscreenElem } from "../../utils";
@@ -90,27 +83,15 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
               )}
             </div>
           </Button>
-          {mode === "light" ? (
-            <Button
-              className={[styles.controlBtn].join(" ")}
-              variant={mode}
-              onClick={() => dispatch({ type: "SET_MODE", mode: "dark" })}
-            >
-              <div className={styles.centerXY}>
-                <FaSun></FaSun>
-              </div>
-            </Button>
-          ) : (
-            <Button
-              className={[styles.controlBtn].join(" ")}
-              variant={mode}
-              onClick={() => dispatch({ type: "SET_MODE", mode: "light" })}
-            >
-              <div className={styles.centerXY}>
-                <FaMoon></FaMoon>
-              </div>
-            </Button>
-          )}
+          <Button
+            className={[styles.controlBtn].join(" ")}
+            variant={mode}
+            onClick={() => dispatch({ type: "SET_MODE" })}
+          >
+            <div className={styles.centerXY}>
+              <FaPalette></FaPalette>
+            </div>
+          </Button>
         </Col>
         <Col xs={4} style={{ padding: "0" }}>
           {/* <Button

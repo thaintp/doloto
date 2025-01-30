@@ -55,9 +55,9 @@ export const createAudio = (num: number, newSpeed: number) => {
 export const getColor = (mode: string, type?: number[]) => {
   return {
     typeColor: type
-      ? mode === "light"
-        ? TypesColorLight[type[0]]
-        : TypesColorDark[type[0]]
+      ? mode === "dark"
+        ? TypesColorDark[type[0]]
+        : TypesColorLight[type[0]]
       : undefined,
     modeColor: ModeColor[mode],
   };

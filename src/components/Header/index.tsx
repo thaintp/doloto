@@ -9,6 +9,7 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { GameContext } from "../Game";
 
 import styles from "./index.module.css";
+import { BgColor } from "../../data";
 
 const Header = () => {
   const [
@@ -38,7 +39,13 @@ const Header = () => {
         className={styles.genNumberContainer}
         style={{ backgroundColor: modeColor }}
       >
-        <Badge variant={mode} className={styles.badge}>
+        <Badge
+          className={styles.badge}
+          style={{
+            backgroundColor: BgColor[mode],
+            color: mode === "dark" ? "#ffffff" : "#343a40",
+          }}
+        >
           {auto ? (
             genNumberIndex > 0 ? (
               <span className={styles.genNumber}>{curGenNumber}</span>

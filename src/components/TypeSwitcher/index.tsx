@@ -14,9 +14,8 @@ import { fullscreenElem, getColor } from "../../utils";
 import styles from "./index.module.css";
 
 const TypeSwitcher = () => {
-  const [{ typeColor, modeColor, type, mode }, dispatch] = useContext(
-    GameContext
-  );
+  const [{ typeColor, modeColor, type, mode }, dispatch] =
+    useContext(GameContext);
 
   const switchType = (i: number, j: number) => {
     Swal.fire({
@@ -36,13 +35,14 @@ const TypeSwitcher = () => {
       className={styles.container}
       style={{
         backgroundColor: modeColor,
-        color: mode === "light" ? "#000" : "#fff",
+        color: mode === "dark" ? "#fff" : "#000",
       }}
     >
       <h5 style={{ margin: "20px 0" }}>
         Tờ hiện tại là tờ màu{" "}
         <Badge
           variant={mode}
+          className={styles.colorBadge}
           style={{
             backgroundColor: typeColor,
           }}
@@ -61,7 +61,9 @@ const TypeSwitcher = () => {
           >
             <Container>
               <Row>
-                <Col xs={5}>{typeName}</Col>
+                <Col className={styles.centerXY} xs={5}>
+                  {typeName}
+                </Col>
                 <Col xs={7} style={{ textAlign: "right" }}>
                   {[1, 2].map((t, j) => (
                     <Button

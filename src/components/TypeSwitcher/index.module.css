@@ -9,6 +9,16 @@
   height: 87%;
 }
 
+.colorBadge {
+  padding: 0.5rem;
+}
+
+.centerXY {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+}
+
 @media screen and (min-width: 600px) {
   tbody td {
     font-size: xxx-large;
@@ -20,6 +30,7 @@
 
 .mrBtn {
   margin-right: 2%;
+  padding: 0.5rem 1rem;
 }
 
 @media screen and (max-height: 450px) {
