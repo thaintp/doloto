@@ -1,13 +1,8 @@
 import { Game } from "./components";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import styles from "./App.module.css";
-import Button from "react-bootstrap/Button";
-import { FaCompress, FaExpand } from "react-icons/fa";
 
 import { useDarkMode } from "./hooks/";
 
 const App = () => {
-  const handle = useFullScreenHandle();
   const [mode, setMode] = useDarkMode();
 
   return (
