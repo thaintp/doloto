@@ -34,32 +34,6 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
     });
   }, [dispatch]);
 
-  const toggleAuto = useCallback(() => {
-    if (!auto) {
-      Swal.fire({
-        title: "Mở kêu số?",
-        text: "Mở tính năng kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
-        showCancelButton: true,
-        confirmButtonText: "Mở",
-        cancelButtonText: "Không",
-        target: fullscreenElem(),
-      }).then(({ isConfirmed }) => {
-        isConfirmed && dispatch({ type: "START_AUTO" });
-      });
-    } else {
-      Swal.fire({
-        title: "Tắt kêu số?",
-        text: "Tắt tính năng kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
-        showCancelButton: true,
-        confirmButtonText: "Tắt",
-        cancelButtonText: "Không",
-        target: fullscreenElem(),
-      }).then(({ isConfirmed }) => {
-        isConfirmed && dispatch({ type: "STOP_AUTO" });
-      });
-    }
-  }, [dispatch, auto]);
-
   return (
     <Container
       className={styles.container}
