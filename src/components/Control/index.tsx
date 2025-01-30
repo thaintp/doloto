@@ -45,8 +45,7 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
     if (!auto) {
       Swal.fire({
         title: "Mở kêu số?",
-        text:
-          "Mở tính năng kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
+        text: "Mở tính năng kêu số và tự động dò, khi mở sẽ xoá hết các nước đi của ván này!",
         showCancelButton: true,
         confirmButtonText: "Mở",
         cancelButtonText: "Không",
@@ -57,8 +56,7 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
     } else {
       Swal.fire({
         title: "Tắt kêu số?",
-        text:
-          "Tắt tính năng kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
+        text: "Tắt tính năng kêu số và tự động dò, khi tắt sẽ xoá hết các nước đi của ván này!",
         showCancelButton: true,
         confirmButtonText: "Tắt",
         cancelButtonText: "Không",
@@ -77,45 +75,54 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
       <Row className={styles.header}>
         <Col xs={4} style={{ padding: "0" }}>
           <Button
-            className={styles.mrBtn}
+            className={[styles.mrBtn, styles.controlBtn].join(" ")}
             variant={mode}
             onClick={() => dispatch({ type: "TOGGLE_SHOW_SWITCH_TYPE" })}
             style={{
               backgroundColor: typeColor,
             }}
           >
-            {type[1] === 0 ? (
-              <Number1Icon></Number1Icon>
-            ) : (
-              <Number2Icon></Number2Icon>
-            )}
+            <div className={styles.centerXY}>
+              {type[1] === 0 ? (
+                <Number1Icon></Number1Icon>
+              ) : (
+                <Number2Icon></Number2Icon>
+              )}
+            </div>
           </Button>
           {mode === "light" ? (
             <Button
+              className={[styles.controlBtn].join(" ")}
               variant={mode}
               onClick={() => dispatch({ type: "SET_MODE", mode: "dark" })}
             >
-              <FaSun></FaSun>
+              <div className={styles.centerXY}>
+                <FaSun></FaSun>
+              </div>
             </Button>
           ) : (
             <Button
+              className={[styles.controlBtn].join(" ")}
               variant={mode}
               onClick={() => dispatch({ type: "SET_MODE", mode: "light" })}
             >
-              <FaMoon></FaMoon>
+              <div className={styles.centerXY}>
+                <FaMoon></FaMoon>
+              </div>
             </Button>
           )}
         </Col>
         <Col xs={4} style={{ padding: "0" }}>
-          <Button
+          {/* <Button
             variant={mode}
             onClick={() => toggleAuto()}
             className={styles.mrBtn}
             disabled={showSwitchType}
           >
             <FaBullhorn></FaBullhorn>
-          </Button>
+          </Button> */}
           <Button
+            className={[styles.controlBtn].join(" ")}
             variant={mode}
             onClick={() => startReset()}
             disabled={
@@ -123,29 +130,36 @@ const Control = ({ playNext, historyDo }: ControlPropsType) => {
               (!auto && !historyDo.canUndo && !historyDo.canRedo)
             }
           >
-            <FaSyncAlt></FaSyncAlt>
+            <div className={styles.centerXY}>
+              <FaSyncAlt></FaSyncAlt>
+            </div>
           </Button>
         </Col>
 
         <Col xs={4} style={{ padding: "0" }}>
           {!auto ? (
-            <div>
+            <>
               <Button
-                className={styles.mrBtn}
+                className={[styles.mrBtn, styles.controlBtn].join(" ")}
                 variant={mode}
                 onClick={() => historyDo.undo()}
                 disabled={!historyDo.canUndo || showSwitchType}
               >
-                <IoArrowUndo></IoArrowUndo>
+                <div className={styles.centerXY}>
+                  <IoArrowUndo></IoArrowUndo>
+                </div>
               </Button>
               <Button
+                className={[styles.controlBtn].join(" ")}
                 variant={mode}
                 onClick={() => historyDo.redo()}
                 disabled={!historyDo.canRedo || showSwitchType}
               >
-                <IoArrowRedo></IoArrowRedo>
+                <div className={styles.centerXY}>
+                  <IoArrowRedo></IoArrowRedo>
+                </div>
               </Button>
-            </div>
+            </>
           ) : (
             <div>
               <Button

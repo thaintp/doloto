@@ -4,12 +4,29 @@
 }
 
 .mrBtn {
-  margin-right: 2%;
+  margin-right: 3%;
+}
+
+.centerXY {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hFull {
+  height: 100%;
+}
+
+.controlBtn {
+  padding: 1rem;
 }
 
 @media screen and (max-width: 310px) {
   .mrBtn {
     margin-right: 1px;
+  }
+  .controlBtn {
+    padding: 0.75rem;
   }
 }
 .container {
